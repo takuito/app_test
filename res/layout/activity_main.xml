@@ -15,10 +15,21 @@
         android:text="@string/hello_world" />
     
     <Button 
-        android:id="@+id/scan_button"
+        android:id="@+id/btnScan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text"
         android:text="Scan" />
-
+    <Button 
+        android:id="@+id/btnStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnScan"
+        android:text="Stop" />
+    <Button 
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnStop"
+        android:text="Save" />
 </RelativeLayout>
