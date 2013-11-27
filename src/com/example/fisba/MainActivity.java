@@ -2,9 +2,6 @@ package com.example.fisba;
 
 //import com.futronictech.R;
 
-import java.io.File;
-import java.io.FileOutputStream;
-
 import com.example.fisba.Scanner;
 import com.example.fisba.UsbDeviceDataExchangeImpl;
 import com.example.fisba.FPScan;
@@ -12,22 +9,11 @@ import com.example.fisba.FPScan;
 import android.os.Bundle;
 import android.os.Message;
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Paint;
-import android.graphics.Bitmap.Config;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.os.Handler;
 
 public class MainActivity extends Activity {
@@ -37,6 +23,7 @@ public class MainActivity extends Activity {
 	private static Button mButtonStop;
 	private Button mButtonSave;
 	private static TextView mMessage;
+	private static TextView mText;
 	
 	private CheckBox mCheckFrame;
 	private CheckBox mCheckLFD;
@@ -76,6 +63,7 @@ public class MainActivity extends Activity {
     	mButtonScan = (Button) findViewById(R.id.btnScan);
         mButtonStop = (Button) findViewById(R.id.btnStop);
         mButtonSave = (Button) findViewById(R.id.btnSave);
+       // mText =(TextView) findViewById(R.id.text);
 
         usb_host_ctx = new UsbDeviceDataExchangeImpl(this, mHandler);
 
@@ -85,7 +73,7 @@ public class MainActivity extends Activity {
 	        		{
 	        			mStop = true;
 	        			mFPScan.stop();
-	        			
+	        			mText.setText("Stop");
 	        		}
 	        		mStop = false;
 	        		if(mUsbHostMode)
@@ -97,15 +85,16 @@ public class MainActivity extends Activity {
 			        		{
 			        			mButtonScan.setEnabled(false);
 			        	        mButtonSave.setEnabled(false);
-			        	        mCheckUsbHostMode.setEnabled(false);
+			        	        //mCheckUsbHostMode.setEnabled(false);
 			        	        mButtonStop.setEnabled(true);
+			        	        mText.setText("Start");
 			        		}	
 		                }
 		            	else
 		            	{
 		            		if(!usb_host_ctx.IsPendingOpen())
 		            		{
-		            			mMessage.setText("Can not start scan operation.\nCan't open scanner device");
+		            			//mText.setText("Can not start scan operation.\nCan't open scanner device");
 		            		}
 		            	}    
 	        		}
@@ -115,7 +104,7 @@ public class MainActivity extends Activity {
 		        		{
 		        			mButtonScan.setEnabled(false);
 		        	        mButtonSave.setEnabled(false);
-		        	        mCheckUsbHostMode.setEnabled(false);
+		        	        //mCheckUsbHostMode.setEnabled(false);
 		        	        mButtonStop.setEnabled(true);
 		        		}	
 	        		}
@@ -133,7 +122,7 @@ public class MainActivity extends Activity {
 	        		}	        		
 	        		mButtonScan.setEnabled(true);
 	        		mButtonSave.setEnabled(true);
-	        		mCheckUsbHostMode.setEnabled(true);
+	        		//mCheckUsbHostMode.setEnabled(true);
 	        		mButtonStop.setEnabled(false);	        		
         		}
         });
@@ -179,7 +168,7 @@ public class MainActivity extends Activity {
             case MESSAGE_ERROR:
            		//mFPScan = null;
             	mButtonScan.setEnabled(true);
-            	mCheckUsbHostMode.setEnabled(true);
+            	//mCheckUsbHostMode.setEnabled(true);
             	mButtonStop.setEnabled(false);
             	break;
             case UsbDeviceDataExchangeImpl.MESSAGE_ALLOW_DEVICE:
@@ -189,7 +178,7 @@ public class MainActivity extends Activity {
 	        		{
 	        			mButtonScan.setEnabled(false);
 	        	        mButtonSave.setEnabled(false);
-	        	        mCheckUsbHostMode.setEnabled(false);
+	        	        //mCheckUsbHostMode.setEnabled(false);
 	        	        mButtonStop.setEnabled(true);
 	        		}	
             	}
