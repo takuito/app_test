@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FiSBA</string>
+    <string name="action_settings">Settings</string>
+    
+    <string name="fingerprint_authentication">指紋認証</string>
+    <string name="registrationentry">指紋登録</string>
+    <string name="delete">指紋削除</string>
+    <string name="edit">指紋編集</string>
+    <string name="data_administration">データ管理</string>
+    
+    <string name="scan_text">指紋認証機器に指を置いて下さい</string>
+    <string name="registrationentry_text">指紋データ登録名を入力して下さい</string>
+    <string name="delete_text">を削除しますか？</string>
+    <string name="delete_complete">指紋削除完了</string>
+    <string name="edit_result">を削除しました</string>
+    <string name="edit_complete">指紋編集完了</string>
+    <string name="delete_result_authentication">認証時に</string>
+    <string name="delete_result_start">を起動します</string>
+    <string name="cancel">キャンセル</string>
+    <string name="scan_success">指紋認証成功</string>
+    <string name="scan_failure">指紋認証失敗</string>
+    <string name="registrationentry_success">指紋登録成功</string>
+    <string name="registrationentry_failure">指紋登録失敗</string>
+    <string name="start_app">アプリを起動します</string>
+    <string name="scan_again">もう１度認証を行いますか？</string>
+    <string name="registrationentry_again">もう１度登録を行いますか？</string>
+    <string name="select_data">指紋データを選択して下さい</string>
+    <string name="select_app">起動アプリを選択して下さい</string>
+    
+    <string name="ok">OK</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    
+    
+    
+
+</resources>

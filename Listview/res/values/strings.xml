@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Listview</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    
+    <string-array name="spice">
+        <item>猫</item>
+        <item>犬</item>
+        <item>猿</item>
+        <item>ドラゴン高橋</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,13 @@
+<RelativeLayout xmlns:android="http://sc"C:/Users/miltank21/Desktop/1.6.1_package/driver/server2008-32bit/tcusb.cat"hemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Button 
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="ダイアログ表示"
+        />
+</RelativeLayout>

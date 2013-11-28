@@ -1,0 +1,81 @@
+package com.example.fisba;
+
+//import com.futronictech.R;
+
+import com.example.fisba.Scanner;
+import com.example.fisba.UsbDeviceDataExchangeImpl;
+import com.futronictech.FPScan;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.os.Handler;
+
+public class MainActivity extends Activity {
+	private static Button mButtonScan;
+	private UsbDeviceDataExchangeImpl usb_host_ctx = null;
+	//private FPScan mFPScan = null;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		mButtonScan = (Button) findViewById(R.id.scan_button);
+        usb_host_ctx = new UsbDeviceDataExchangeImpl(this, mHandler);
+
+        mButtonScan.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {	        		
+	        		if( mFPScan != null )
+	        		{
+	        			mStop = true;
+	        			mFPScan.stop();
+	        			
+	        		}
+	        		mStop = false;
+	        		if(mUsbHostMode)
+	        		{
+		        		usb_host_ctx.CloseDevice();
+		        		if(usb_host_ctx.OpenDevice(0, true))
+		                {
+		        			if( StartScan() )
+			        		{
+			        			mButtonScan.setEnabled(false);
+			        		}	
+		                }
+		            	else
+		            	{
+		            		if(!usb_host_ctx.IsPendingOpen())
+		            		{
+		            			;//mMessage.setText("Can not start scan operation.\nCan't open scanner device");
+		            		}
+		            	}    
+	        		}
+	        		else
+	        		{
+	        			if( StartScan() )
+		        		{
+		        			mButtonScan.setEnabled(false);
+		        		}	
+	        		}
+        		}
+        });
+
+    	private boolean StartScan()
+        {
+    		mFPScan = new FPScan(usb_host_ctx, mHandler);
+    		mFPScan.start();		
+    		return true;
+        }
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+}
