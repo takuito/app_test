@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="0 個の要素を &apos;FiSBA/src/com.example.fisba&apos; にコピー&#x0D;&#x0A;- 宛先要素: &apos;FiSBA/src/com.example.fisba&apos;" description="コンパイル単位をコピー" destination="=FiSBA/src&lt;com.example.fisba" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1385482404884" units="0" version="1.0"/>
-</session>

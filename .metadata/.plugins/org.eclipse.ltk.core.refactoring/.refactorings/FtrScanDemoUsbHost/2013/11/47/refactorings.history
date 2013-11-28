@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="2 個の要素を &apos;layout&apos; にコピー&#x0D;&#x0A;- 元のプロジェクト: &apos;FtrScanDemoUsbHost&apos;&#x0D;&#x0A;- 宛先要素: &apos;layout&apos;&#x0D;&#x0A;- オリジナル要素:&#x0D;&#x0A;     main.xml&#x0D;&#x0A;     activity_select_file_format.xml" description="ファイルをコピー" element1="res/layout/main.xml" element2="res/layout/activity_select_file_format.xml" files="2" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1385185097248" target="/FiSBA/res/layout" units="0" version="1.0"/>
-</session>
