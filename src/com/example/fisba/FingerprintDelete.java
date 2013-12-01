@@ -19,7 +19,7 @@ public class FingerprintDelete extends Activity {
 
         mButtonCancel.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	setContentView(R.layout.activity_main);
+            	finish();
             }
         });
     }

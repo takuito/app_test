@@ -1,6 +1,7 @@
 package com.example.fisba;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,13 +26,15 @@ public class SelectMenu extends Activity {
     	
     	mButtonRegistrationentry.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	setContentView(R.layout.fingerprint_registrationentry);
+            	Intent serverIntent = new Intent(SelectMenu.this, FingerprintRegistrationentry.class);
+        	    startActivityForResult(serverIntent, 1);
             }
         });
     	
     	mButtonDelete.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	setContentView(R.layout.fingerprint_delete);
+            	Intent serverIntent = new Intent(SelectMenu.this, FingerprintDelete.class);
+        	    startActivityForResult(serverIntent, 1);
             }
         });
     	
@@ -45,7 +48,7 @@ public class SelectMenu extends Activity {
 
         mButtonCancel.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	setContentView(R.layout.activity_main);
+            	finish();
             }
         });
     }

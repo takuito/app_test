@@ -4,8 +4,12 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.USB_PERMISSION" />
+
+    <uses-feature android:name="android.hardware.usb.host" />
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="14"
         android:targetSdkVersion="14" />
 
     <application
@@ -21,6 +25,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.futronictech.ftrScanApiAndroidHelper" />
+        <activity android:name="com.futronictech.ftrWsqAndroidHelper" />
+        
+        <activity android:name="com.example.fisba.FingerScan">
+            <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+        </activity>
+        <activity android:name="com.example.fisba.SelectMenu"></activity>
+        <activity android:name="com.example.fisba.FingerprintRegistrationentry"></activity>
+        <activity android:name="com.example.fisba.FingerprintDelete"></activity>
+        
+        <activity android:name="com.futronictech.FPScan"></activity>
+        <activity android:name="com.futronictech.Scanner"></activity>
+        <activity android:name="com.futronictech.UsbDeviceDataExchangeImpl"></activity>
     </application>
-
 </manifest>

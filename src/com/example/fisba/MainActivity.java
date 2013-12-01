@@ -3,6 +3,7 @@ package com.example.fisba;
 //import com.futronictech.SelectFileFormatActivity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,14 +23,16 @@ public class MainActivity extends Activity {
     	mButtonDataAdministration = (Button) findViewById(R.id.btnDataAdministration);
 
         mButtonScan.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {	        		
-            	setContentView(R.layout.finger_scan);
+            public void onClick(View v) {
+            	Intent serverIntent = new Intent(MainActivity.this, FingerScan.class);
+        	    startActivityForResult(serverIntent, 1);
             }
         });
         
         mButtonDataAdministration.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	setContentView(R.layout.select_menu);
+            	Intent serverIntent = new Intent(MainActivity.this, SelectMenu.class);
+        	    startActivityForResult(serverIntent, 1);
             }
         });
     }
