@@ -24,14 +24,14 @@ public class MainActivity extends Activity {
 
         mButtonScan.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	Intent serverIntent = new Intent(MainActivity.this, FingerScan.class);
+            	Intent serverIntent = new Intent(getApplication(), FingerScan.class);
         	    startActivityForResult(serverIntent, 1);
             }
         });
         
         mButtonDataAdministration.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	Intent serverIntent = new Intent(MainActivity.this, SelectMenu.class);
+            	Intent serverIntent = new Intent(getApplication(), SelectMenu.class);
         	    startActivityForResult(serverIntent, 1);
             }
         });

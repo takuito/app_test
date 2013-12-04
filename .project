@@ -3,6 +3,8 @@
 	<name>FiSBA</name>
 	<comment></comment>
 	<projects>
+		<project>ftrScanApiAndroidHelperUsbHost</project>
+		<project>ftrWsqAndroidHelper</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

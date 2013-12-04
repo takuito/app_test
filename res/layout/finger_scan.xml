@@ -18,8 +18,8 @@
     <ImageView 
         android:id="@+id/imageFinger"
         android:contentDescription="Finger Image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"/>
+        android:layout_width="500dp"
+        android:layout_height="500dp"/>
 
     <Button 
         android:id="@+id/btnScanStart"
