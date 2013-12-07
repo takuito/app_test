@@ -8,19 +8,45 @@
     <TextView 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/registrationentry"/>
+        android:text="@string/fingerprint_authentication"/>
 
     <TextView 
+        android:id="@+id/tvMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/scan_text"/>
+    
+    <ImageView 
+        android:id="@+id/imageFinger"
+        android:background="#FFFFFF"
+        android:contentDescription="Finger Image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"/>
 
+    <Button 
+        android:id="@+id/btnScanStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="指紋認証開始"
+        />
+    <Button 
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="指紋保存"
+        />
     <Button 
         android:id="@+id/btnCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cancel"
         />
+    
+    <TextView 
+        android:id="@+id/tvScannerInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="認証状況"/>
     
 
 </LinearLayout>

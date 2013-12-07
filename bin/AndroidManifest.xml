@@ -34,6 +34,8 @@
         <activity android:name="com.example.fisba.FingerprintRegistrationentry"></activity>
         <activity android:name="com.example.fisba.FingerprintDelete"></activity>
         
+        <activity android:name="com.example.fisba.SelectFileFormatActivity"></activity>
+        
         <activity android:name="com.futronictech.FPScan"></activity>
         <activity android:name="com.futronictech.Scanner"></activity>
         <activity android:name="com.futronictech.UsbDeviceDataExchangeImpl"></activity>

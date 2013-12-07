@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="C:/Users/miltank21/Desktop/N1/ScanAPI_WSQ_Android_Demo_UsbHost_2013.09.04/source/FtrScanDemoUsbHost/libs/android-support-v4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/miltank21/Desktop/N1/ScanAPI_WSQ_Android_Demo_UsbHost_2013.09.04/source/FtrScanDemoUsbHost/libs/android-support-v4.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>

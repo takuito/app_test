@@ -3,6 +3,10 @@ package com.example.fisba;
 //import com.futronictech.FPScan;
 import com.futronictech.Scanner;
 import com.futronictech.UsbDeviceDataExchangeImpl;
+import com.futronictech.ftrWsqAndroidHelper;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,14 +23,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.view.View.OnClickListener;
 
 public class FingerScan extends Activity {
     /** Called when the activity is first created. */
 	private static Button mButtonCancel;
 	private static Button mButtonScanStart;
+	private static Button mButtonSave;
 	
 	private static TextView mMessage;
+	private static TextView mScannerInfo;
 	
 	private Scanner devScan = null;
 
@@ -44,7 +51,7 @@ public class FingerScan extends Activity {
     public static final int MESSAGE_ERROR = 4;
     public static final int MESSAGE_TRACE = 5;
     
-	//private FPScan mFPScan = null;
+	private FPScan mFPScan = null;
 	
 	// Intent request codes
     private static final int REQUEST_FILE_FORMAT = 1;
@@ -57,39 +64,45 @@ public class FingerScan extends Activity {
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    	super.onCreate(savedInstanceState);
         setContentView(R.layout.finger_scan);
         
     	mButtonCancel = (Button) findViewById(R.id.btnCancel);
     	mFingerImage = (ImageView) findViewById(R.id.imageFinger);
     	mMessage = (TextView) findViewById(R.id.tvMessage);
     	mButtonScanStart = (Button) findViewById(R.id.btnScanStart);
+    	mButtonSave = (Button) findViewById(R.id.btnSave);
+    	mScannerInfo = (TextView) findViewById(R.id.tvScannerInfo);
     	
     	usb_host_ctx = new UsbDeviceDataExchangeImpl(FingerScan.this, mHandler);
 
     	mButtonScanStart.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-        		/*if( mFPScan != null )
+        		if( mFPScan != null )
         		{
         			mStop = true;
         			mFPScan.stop();
         			
-        		}*/
+        		}
         		mStop = false;
         		if(mUsbHostMode)
         		{
 	        		usb_host_ctx.CloseDevice();
 	        		if(usb_host_ctx.OpenDevice(0, true))
 	                {
-	        			//if( StartScan() )
+	        			Toast.makeText(FingerScan.this, "true",Toast.LENGTH_LONG).show();
+	        			if( StartScan() )
 		        		{
-		        			
+	        				mButtonScanStart.setEnabled(true);
+	    	            	//mCheckUsbHostMode.setEnabled(true);
+	    	            	mButtonCancel.setEnabled(false);
 		        		}	
 	                }
-	            	//else
+	            	else
 	            	{
 	            		if(!usb_host_ctx.IsPendingOpen())
 	            		{
+	            			Toast.makeText(FingerScan.this, "false",Toast.LENGTH_LONG).show();
 	            			mMessage.setText("Can not start scan operation.\nCan't open scanner device");
 	            		}
 	            	}    
@@ -98,79 +111,102 @@ public class FingerScan extends Activity {
         		{
         			if( StartScan() )
 	        		{
-	        			
+        				mButtonScanStart.setEnabled(true);
+    	            	//mCheckUsbHostMode.setEnabled(true);
+    	            	mButtonCancel.setEnabled(false);
 	        		}	
         		}
             }
         });
     
+        mButtonSave.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {   
+            	if( mImageFP != null)
+            		SaveImage();
+            	}
+        });
     
-    mButtonCancel.setOnClickListener(new OnClickListener() {
-        public void onClick(View v) {
-        	finish();
+        mButtonCancel.setOnClickListener(new OnClickListener() {
+        	public void onClick(View v) {
+        		mStop = true;	       
+        		if( mFPScan != null )
+        		{
+        			mFPScan.stop();
+        			mFPScan = null;
+   			
+        		}	        		
+        		mButtonScanStart.setEnabled(true);
+        		mButtonSave.setEnabled(true);
+        		//mCheckUsbHostMode.setEnabled(true);
+        		mButtonCancel.setEnabled(false);
+        		finish();
+        		}
+        	});
         }
-    });
-
-    }
+    
 	private boolean StartScan()
     {
-        		if( !devScan.GetImageSize() )
-    	        {/*
-    	        	mHandler.obtainMessage(MESSAGE_SHOW_MSG, -1, -1, devScan.GetErrorMessage()).sendToTarget();
-    	        	if( mUsbHostMode )
-    	        		devScan.CloseDeviceUsbHost();
-    	        	else
-    	        		devScan.CloseDevice();
-                    mHandler.obtainMessage(MESSAGE_ERROR).sendToTarget();
-    	            return false;*/
-    	        }/*
-    	        mImageWidth = devScan.GetImageWidth();
-    	        mImageHeight = devScan.GetImaegHeight();
-                //allocate the buffer before calling GetFrame
-                mImageFP = new byte[mImageWidth*mImageHeight];
-    	        strInfo = devScan.GetVersionInfo();
-	        	mHandler.obtainMessage(MESSAGE_SHOW_SCANNER_INFO, -1, -1, strInfo).sendToTarget();
-    	        //bGetInfo = true;            	
-         	//}
-            //set options
-            flag = 0;
-            mask = devScan.FTR_OPTIONS_DETECT_FAKE_FINGER | devScan.FTR_OPTIONS_INVERT_IMAGE;
-            
-            // get frame / image2
-            long lT1 = SystemClock.uptimeMillis();
-            if( mFrame )
-            	bRet = devScan.GetFrame(mImageFP);
-            else
-            	bRet = devScan.GetImage2(4,mImageFP);
-            if( !bRet )
-            {
-            	mHandler.obtainMessage(MESSAGE_SHOW_MSG, -1, -1, devScan.GetErrorMessage()).sendToTarget();
-            	errCode = devScan.GetErrorCode();
-            	if( errCode != devScan.FTR_ERROR_EMPTY_FRAME && errCode != devScan.FTR_ERROR_MOVABLE_FINGER &&  errCode != devScan.FTR_ERROR_NO_FRAME )
-            	{
-    	        	if( mUsbHostMode )
-    	        		devScan.CloseDeviceUsbHost();
-    	        	else
-    	        		devScan.CloseDevice();
-                    mHandler.obtainMessage(MESSAGE_ERROR).sendToTarget();
-    	            return false;                		
-            	}    	        	
-            }
-            else
-            {
-            	if( mFrame ) 
-            		strInfo = String.format("OK. GetFrame time is %d(ms)",  SystemClock.uptimeMillis()-lT1);
-            	else
-            		strInfo = String.format("OK. GetImage2 time is %d(ms)",  SystemClock.uptimeMillis()-lT1);
-            	//mHandler.obtainMessage(MESSAGE_SHOW_MSG, -1, -1, strInfo ).sendToTarget();
-            }*/
-            return true;
-		
-		/*
 		mFPScan = new FPScan(usb_host_ctx, mHandler);
 		mFPScan.start();
 		return true;
-		*/
+    }
+	
+    private void SaveImage()
+    {
+    	Intent serverIntent = new Intent(FingerScan.this, SelectFileFormatActivity.class);
+	    startActivityForResult(serverIntent, 1);
+    }
+    
+    private void SaveImageByFileFormat(String fileFormat, String fileName)
+    {
+ 	   	if( fileFormat.compareTo("WSQ") == 0 )	//save wsq file
+    	{    	
+    		Scanner devScan = new Scanner();
+    		boolean bRet;
+    		if( mUsbHostMode )
+    			bRet = devScan.OpenDeviceOnInterfaceUsbHost(usb_host_ctx);
+    		else
+    			bRet = devScan.OpenDevice();
+    		if( !bRet )
+    		{
+                mMessage.setText(devScan.GetErrorMessage());
+                return;    			
+    		}
+    		byte[] wsqImg = new byte[mImageWidth*mImageHeight];
+    		long hDevice = devScan.GetDeviceHandle();
+    		ftrWsqAndroidHelper wsqHelper = new ftrWsqAndroidHelper();
+    		if( wsqHelper.ConvertRawToWsq(hDevice, mImageWidth, mImageHeight, 2.25f, mImageFP, wsqImg) )
+    		{  			
+    	        File file = new File(fileName);                
+    	        try { 
+    	            FileOutputStream out = new FileOutputStream(file);                    
+    	            out.write(wsqImg, 0, wsqHelper.mWSQ_size);	// save the wsq_size bytes data to file
+    	            out.close();
+    	            mMessage.setText("Image is saved as " + fileName);
+    	         } catch (Exception e) { 
+    	        	 mMessage.setText("Exception in saving file"); 
+    	         }     			
+    		}
+    		else
+    			mMessage.setText("Failed to convert the image!");
+    		if( mUsbHostMode )
+    			devScan.CloseDeviceUsbHost();
+    		else
+    			devScan.CloseDevice();
+    		return;
+    	}
+    	// 0 - save bitmap file 
+        File file = new File(fileName);                
+        try { 
+            FileOutputStream out = new FileOutputStream(file);                    
+            //mBitmapFP.compress(Bitmap.CompressFormat.PNG, 90, out);
+            MyBitmapFile fileBMP = new MyBitmapFile(mImageWidth, mImageHeight, mImageFP);
+            out.write(fileBMP.toBytes());
+            out.close();
+            mMessage.setText("Image is saved as " + fileName);
+         } catch (Exception e) { 
+        	 mMessage.setText("Exception in saving file"); 
+         } 
     }
 	
     private static void ShowBitmap()
@@ -203,20 +239,20 @@ public class FingerScan extends Activity {
 	            switch (msg.what) {
 	            case MESSAGE_SHOW_MSG:            	
 	            	String showMsg = (String) msg.obj;
-	                //mMessage.setText(showMsg);
+	                mMessage.setText(showMsg);
 	                break;
 	            case MESSAGE_SHOW_SCANNER_INFO:            	
 	            	String showInfo = (String) msg.obj;
-	                //mScannerInfo.setText(showInfo);
+	                mScannerInfo.setText(showInfo);
 	                break;
 	            case MESSAGE_SHOW_IMAGE:
 	            	ShowBitmap();
 	                break;
 	            case MESSAGE_ERROR:
 	           		////mFPScan = null;
-	            	//mButtonScan.setEnabled(true);
+	            	mButtonScanStart.setEnabled(true);
 	            	//mCheckUsbHostMode.setEnabled(true);
-	            	//mButtonStop.setEnabled(false);
+	            	mButtonCancel.setEnabled(false);
 	            	break;
 	            case UsbDeviceDataExchangeImpl.MESSAGE_ALLOW_DEVICE:
 	            	if(usb_host_ctx.ValidateContext())
@@ -233,7 +269,7 @@ public class FingerScan extends Activity {
 	            		mMessage.setText("Can't open scanner device");
 	            	break;           
 		        case UsbDeviceDataExchangeImpl.MESSAGE_DENY_DEVICE:
-	            	//mMessage.setText("User deny scanner device");
+	            	mMessage.setText("User deny scanner device");
 	            	break;
 	            }
 	        }
@@ -243,11 +279,11 @@ public class FingerScan extends Activity {
 		protected void onDestroy() {
 			super.onDestroy();
 			mStop = true;	       
-			/*if( mFPScan != null )
+			if( mFPScan != null )
 			{
 				mFPScan.stop();
 				mFPScan = null;
-			}*/
+			}
 			usb_host_ctx.CloseDevice();
 			usb_host_ctx.Destroy();
 			usb_host_ctx = null;
@@ -259,18 +295,15 @@ public class FingerScan extends Activity {
 	         case REQUEST_FILE_FORMAT:
 				 if (resultCode == Activity.RESULT_OK) {
 				     // Get the file format
-					 //String[] extraString = data.getExtras().getStringArray(SelectFileFormatActivity.EXTRA_FILE_FORMAT);
-					 //String fileFormat = extraString[0];
-					 //String fileName = extraString[1];
-					 //SaveImageByFileFormat(fileFormat, fileName);
+					 String[] extraString = data.getExtras().getStringArray(SelectFileFormatActivity.EXTRA_FILE_FORMAT);
+					 String fileFormat = extraString[0];
+					 String fileName = extraString[1];
+					 SaveImageByFileFormat(fileFormat, fileName);
 	             }
 				 else
 					 mMessage.setText("Cancelled!");
 	             break;            
 	        }
 	    }
-	    @Override
-		protected void onRestart() {
-	    	StartScan();
-	    }
+
 }
