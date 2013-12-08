@@ -8,9 +8,17 @@ import com.futronictech.ftrWsqAndroidHelper;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import org.opencv.android;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -41,6 +49,7 @@ public class FingerScan extends Activity {
 	public static byte[] mImageFP = null;    
     public static int mImageWidth = 0;
     public static int mImageHeight = 0;
+    
     private static Bitmap mBitmapFP = null;
     
     private static ImageView mFingerImage;
@@ -53,6 +62,7 @@ public class FingerScan extends Activity {
     
 	private FPScan mFPScan = null;
 	
+	private static int fileNum = 0;
 	// Intent request codes
     private static final int REQUEST_FILE_FORMAT = 1;
 	private UsbDeviceDataExchangeImpl usb_host_ctx = null;
@@ -120,9 +130,46 @@ public class FingerScan extends Activity {
         });
     
         mButtonSave.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {   
-            	if( mImageFP != null)
-            		SaveImage();
+            public void onClick(View v) {
+            	//ディレクトリ /mnt/sdcard/Android/FtrScanDemo/ を指定（SDカードが入っている状態で実行）
+            	File dir = new File("/mnt/sdcard/Android/FtrScanDemo/");
+            	
+            	//指定されたディレクトリのファイル名（ディレクトリ名）を取得
+            	final File[] filelist = dir.listFiles();
+            	
+            	fileNum = filelist.length;
+            	
+            	////指定されたディレクトリのファイル名（ディレクトリ名）を取得
+            	//final File[] filelist = dir.listFiles();
+            	
+            	//入力画像
+            	//TypedArray a = obtainStyledAttributes(R.styleable.Gallery1);
+            	//int s = getResources(R.id.imageFinger);
+        		Bitmap src = BitmapFactory.decodeResource(getResources(),R.id.imageFinger);
+        		Bitmap src1 = mBitmapFP.copy(Bitmap.Config.ARGB_8888, true);
+        		Mat image = android.BitmapToMat(src1);
+            	
+            	for(int i = 0; i < fileNum; i++){
+            		if(filelist[i].isFile()){
+            			//Toast.makeText(FingerScan.this, String.format("%s", filelist[i].getName()),Toast.LENGTH_SHORT).show();
+            			
+            			src = BitmapFactory.decodeFile("filelist[i].getName()");
+            			Bitmap src2 = src.copy(Bitmap.Config.ARGB_8888, true);
+            			Mat templ = android.BitmapToMat(src2);
+            			//テンプレートマッチング
+            			Mat result = new Mat();
+            			Imgproc.matchTemplate(image, templ, result, Imgproc.TM_CCOEFF_NORMED);
+            			Core.MinMaxLocResult maxr = Core.minMaxLoc(result);
+            			//マッチング結果の表示
+            			org.opencv.core.Point maxp = maxr.maxLoc;
+            			org.opencv.core.Point pt2 = new Point((int)(maxp.x + templ.width()), (int)(maxp.y + templ.height()));
+            			Mat dst = image.clone();
+            			Core.rectangle(dst, maxp, pt2, new Scalar(255,0,0), 2);
+            		}
+            	}
+            	
+            	//Toast.makeText(FingerScan.this, String.format("%s", filelist),Toast.LENGTH_LONG);
+            	
             	}
         });
     
@@ -178,7 +225,7 @@ public class FingerScan extends Activity {
     		if( wsqHelper.ConvertRawToWsq(hDevice, mImageWidth, mImageHeight, 2.25f, mImageFP, wsqImg) )
     		{  			
     	        File file = new File(fileName);                
-    	        try { 
+    	        try {
     	            FileOutputStream out = new FileOutputStream(file);                    
     	            out.write(wsqImg, 0, wsqHelper.mWSQ_size);	// save the wsq_size bytes data to file
     	            out.close();
@@ -197,7 +244,7 @@ public class FingerScan extends Activity {
     	}
     	// 0 - save bitmap file 
         File file = new File(fileName);                
-        try { 
+        try {
             FileOutputStream out = new FileOutputStream(file);                    
             //mBitmapFP.compress(Bitmap.CompressFormat.PNG, 90, out);
             MyBitmapFile fileBMP = new MyBitmapFile(mImageWidth, mImageHeight, mImageFP);
@@ -237,11 +284,11 @@ public class FingerScan extends Activity {
 	        @Override
 	        public void handleMessage(Message msg) {
 	            switch (msg.what) {
-	            case MESSAGE_SHOW_MSG:            	
+	            case MESSAGE_SHOW_MSG:
 	            	String showMsg = (String) msg.obj;
 	                mMessage.setText(showMsg);
 	                break;
-	            case MESSAGE_SHOW_SCANNER_INFO:            	
+	            case MESSAGE_SHOW_SCANNER_INFO:
 	            	String showInfo = (String) msg.obj;
 	                mScannerInfo.setText(showInfo);
 	                break;
