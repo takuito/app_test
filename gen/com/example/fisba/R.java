@@ -21,17 +21,18 @@ public final class R {
         public static final int activity_vertical_margin=0x7f070001;
     }
     public static final class drawable {
-        public static final int ic_action_search=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int icon=0x7f020002;
-        public static final int logo=0x7f020003;
+        public static final int fisba_icon=0x7f020000;
+        public static final int ic_action_search=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int icon=0x7f020003;
+        public static final int logo=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f090013;
+        public static final int action_settings=0x7f090014;
         public static final int btnCancel=0x7f09000f;
         public static final int btnDataAdministration=0x7f090001;
-        public static final int btnDelete=0x7f090012;
-        public static final int btnRegistrationentry=0x7f090011;
+        public static final int btnDelete=0x7f090013;
+        public static final int btnRegistrationentry=0x7f090012;
         public static final int btnSave=0x7f09000e;
         public static final int btnScan=0x7f090000;
         public static final int btnScanStart=0x7f09000d;
@@ -47,6 +48,7 @@ public final class R {
         public static final int textView2=0x7f090007;
         public static final int tvMessage=0x7f09000b;
         public static final int tvScannerInfo=0x7f090010;
+        public static final int tvScannerInfo2=0x7f090011;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

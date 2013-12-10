@@ -5,8 +5,13 @@ import com.futronictech.Scanner;
 import com.futronictech.UsbDeviceDataExchangeImpl;
 import com.futronictech.ftrWsqAndroidHelper;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 import org.opencv.android;
 import org.opencv.core.Core;
@@ -42,6 +47,7 @@ public class FingerScan extends Activity {
 	
 	private static TextView mMessage;
 	private static TextView mScannerInfo;
+	private static TextView mScannerInfo2;
 	
 	private Scanner devScan = null;
 
@@ -83,6 +89,7 @@ public class FingerScan extends Activity {
     	mButtonScanStart = (Button) findViewById(R.id.btnScanStart);
     	mButtonSave = (Button) findViewById(R.id.btnSave);
     	mScannerInfo = (TextView) findViewById(R.id.tvScannerInfo);
+    	mScannerInfo2 = (TextView) findViewById(R.id.tvScannerInfo2);
     	
     	usb_host_ctx = new UsbDeviceDataExchangeImpl(FingerScan.this, mHandler);
 
@@ -131,6 +138,8 @@ public class FingerScan extends Activity {
     
         mButtonSave.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
+            	SaveImage();
+            	/*
             	//ディレクトリ /mnt/sdcard/Android/FtrScanDemo/ を指定（SDカードが入っている状態で実行）
             	File dir = new File("/mnt/sdcard/Android/FtrScanDemo/");
             	
@@ -168,8 +177,8 @@ public class FingerScan extends Activity {
             		}
             	}
             	
-            	//Toast.makeText(FingerScan.this, String.format("%s", filelist),Toast.LENGTH_LONG);
-            	
+            	//Toast.makeText(FingerScan.this, String.format("%s", filelist),Toast.LENGTH_LONG).show();
+            	*/
             	}
         });
     
@@ -207,7 +216,8 @@ public class FingerScan extends Activity {
     private void SaveImageByFileFormat(String fileFormat, String fileName)
     {
  	   	if( fileFormat.compareTo("WSQ") == 0 )	//save wsq file
-    	{    	
+    	{
+
     		Scanner devScan = new Scanner();
     		boolean bRet;
     		if( mUsbHostMode )
@@ -230,9 +240,10 @@ public class FingerScan extends Activity {
     	            out.write(wsqImg, 0, wsqHelper.mWSQ_size);	// save the wsq_size bytes data to file
     	            out.close();
     	            mMessage.setText("Image is saved as " + fileName);
+    	            
     	         } catch (Exception e) { 
     	        	 mMessage.setText("Exception in saving file"); 
-    	         }     			
+    	         }
     		}
     		else
     			mMessage.setText("Failed to convert the image!");
@@ -250,10 +261,49 @@ public class FingerScan extends Activity {
             MyBitmapFile fileBMP = new MyBitmapFile(mImageWidth, mImageHeight, mImageFP);
             out.write(fileBMP.toBytes());
             out.close();
-            mMessage.setText("Image is saved as " + fileName);
+            mScannerInfo2.setText("Image is saved as " + fileName);
+            
+            /*
+            FileOutputStream outStream = openFileOutput(fileName, MODE_PRIVATE);
+            OutputStreamWriter writer = new OutputStreamWriter(outStream);
+            writer.write(fileNum);
+            writer.flush();
+            writer.close();
+            
+            FileInputStream file_read = openFileInput(fileName);
+            in = new BufferedReader(new InputStreamReader(file_read));
+            mMessage.setText(in.readLine());
+            mScannerInfo2.setText("test"+in.readLine());
+            Toast.makeText(FingerScan.this, String.format("%s", in.readLine()),Toast.LENGTH_LONG).show();
+            in.close();
+            */
          } catch (Exception e) { 
         	 mMessage.setText("Exception in saving file"); 
          } 
+        
+        
+        try {
+            // ストリームを開く
+        	FileOutputStream outStream = openFileOutput("test.txt", MODE_PRIVATE);
+            OutputStreamWriter writer = new OutputStreamWriter(outStream);
+            writer.write(fileName);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        BufferedReader in = null;
+        try {
+          FileInputStream fileRead = openFileInput("test.txt");
+          in = new BufferedReader(new InputStreamReader(fileRead));
+          mScannerInfo2.setText(in.readLine());
+          in.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        
+        
     }
 	
     private static void ShowBitmap()

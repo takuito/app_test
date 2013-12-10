@@ -6,7 +6,7 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/miltank21/Desktop/N1/ScanAPI_WSQ_Android_Demo_UsbHost_2013.09.04/source/ftrWsqAndroidHelper/bin/ftrwsqandroidhelper.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/miltank21/Desktop/N1/ScanAPI_WSQ_Android_Demo_UsbHost_2013.09.04/source/ftrScanApiAndroidHelperUsbHost/bin/ftrscanapiandroidhelperusbhost.jar"/>
+	<classpathentry exported="true" kind="lib" path="/ftrWsqAndroidHelper/bin/ftrwsqandroidhelper.jar"/>
+	<classpathentry exported="true" kind="lib" path="/ftrScanApiAndroidHelperUsbHost/bin/ftrscanapiandroidhelperusbhost.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
