@@ -8,8 +8,8 @@ int drawable logo 0x7f020004
 int id action_settings 0x7f090014
 int id btnCancel 0x7f09000f
 int id btnDataAdministration 0x7f090001
-int id btnDelete 0x7f090013
-int id btnRegistrationentry 0x7f090012
+int id btnDelete 0x7f090012
+int id btnRegistrationentry 0x7f090013
 int id btnSave 0x7f09000e
 int id btnScan 0x7f090000
 int id btnScanStart 0x7f09000d

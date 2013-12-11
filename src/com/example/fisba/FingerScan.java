@@ -282,6 +282,7 @@ public class FingerScan extends Activity {
          } 
         
         
+        /*
         try {
             // ストリームを開く
         	FileOutputStream outStream = openFileOutput("test.txt", MODE_PRIVATE);
@@ -292,12 +293,24 @@ public class FingerScan extends Activity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        */
+        try {
+            // ストリームを開く
+        	FileOutputStream outStream = openFileOutput("test.txt", MODE_APPEND);
+            OutputStreamWriter writer = new OutputStreamWriter(outStream);
+            writer.write(fileName);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
+        //デバッグ用
         BufferedReader in = null;
         try {
           FileInputStream fileRead = openFileInput("test.txt");
           in = new BufferedReader(new InputStreamReader(fileRead));
-          mScannerInfo2.setText(in.readLine());
+          mScannerInfo2.setText("test:"+in.readLine());
           in.close();
         } catch (IOException e) {
           e.printStackTrace();

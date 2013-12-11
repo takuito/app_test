@@ -31,8 +31,8 @@ public final class R {
         public static final int action_settings=0x7f090014;
         public static final int btnCancel=0x7f09000f;
         public static final int btnDataAdministration=0x7f090001;
-        public static final int btnDelete=0x7f090013;
-        public static final int btnRegistrationentry=0x7f090012;
+        public static final int btnDelete=0x7f090012;
+        public static final int btnRegistrationentry=0x7f090013;
         public static final int btnSave=0x7f09000e;
         public static final int btnScan=0x7f090000;
         public static final int btnScanStart=0x7f09000d;

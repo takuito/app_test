@@ -12,7 +12,12 @@
 
 
     
-    
+    <Button 
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="指紋削除"
+        />
 
     <Button 
         android:id="@+id/btnCancel"
@@ -20,6 +25,12 @@
         android:layout_height="wrap_content"
         android:text="@string/cancel"
         />
+    
+    <TextView 
+        android:id="@+id/tvScannerInfo2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="認証状況2"/>
     
 
 </LinearLayout>

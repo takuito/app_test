@@ -1,6 +1,9 @@
 package com.example.fisba;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,6 +32,10 @@ public class SelectFileFormatActivity extends Activity {
     private static File mDir;
 	private String mFileFormat = "BITMAP";
 	private String mFileName;
+	
+	//データ管理用
+	private String mScanName;
+	private int mScan_num = 0; 
     // Return Intent extra
     public static String EXTRA_FILE_FORMAT = "file_format";
     
@@ -95,6 +102,26 @@ public class SelectFileFormatActivity extends Activity {
     	extraString[1] = mDir.getAbsolutePath() + "/"+ mFileName;
         Intent intent = new Intent();
         intent.putExtra(EXTRA_FILE_FORMAT, extraString);
+        
+        try {
+            // ストリームを開く
+        	FileOutputStream outStream = openFileOutput("test.txt", MODE_PRIVATE);
+            OutputStreamWriter writer = new OutputStreamWriter(outStream);
+            /*
+            //ここでファイル名から拡張子を
+            if(mFileFormat.compareTo("BITMAP") == 0 )
+        		mFileName = mFileName.replaceAll(".bmp","");
+        	else 
+        		mFileName = mFileName.replaceAll(".wsq","");
+             */
+            writer.write(mScan_num + "," + mFileName + ",");
+            writer.flush();
+            writer.close();
+            mScan_num ++;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         // Set result and finish this Activity
         setResult(Activity.RESULT_OK, intent);
         finish();		
@@ -127,7 +154,9 @@ public class SelectFileFormatActivity extends Activity {
     
     public boolean isImageFolder()
     {
-        File extStorageDirectory = Environment.getExternalStorageDirectory();
+        //File extStorageDirectory = Environment.getExternalStorageDirectory();
+    	File extStorageDirectory = getFilesDir();
+    	//File data = getFilesDir();
         mDir = new File(extStorageDirectory, "Android//FtrScanDemo"); 
         if( mDir.exists() )
         {
