@@ -1,7 +1,9 @@
 package com.example.fisba;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -30,6 +32,7 @@ public class FingerprintDelete extends Activity {
     /** Called when the activity is first created. */
 	private static Button mButtonCancel;
 	private static Button mButtonDelete;
+	private static Button mButtonDeleteStart;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class FingerprintDelete extends Activity {
         setContentView(R.layout.fingerprint_delete);
         
         mButtonDelete = (Button) findViewById(R.id.btnDelete);
+        mButtonDeleteStart = (Button) findViewById(R.id.btnDeleteStart);
     	mButtonCancel = (Button) findViewById(R.id.btnCancel);
     	
 
@@ -45,11 +49,61 @@ public class FingerprintDelete extends Activity {
     	
     	mButtonDelete.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
+            	//デバッグ用
+                BufferedReader in = null;
+                try {
+                  FileInputStream fileRead = openFileInput("test.txt");
+                  in = new BufferedReader(new InputStreamReader(fileRead));
+                  String str = in.readLine();
+                  String[] str_Name = str.split(",", 0);
+                  if(str_Name.length == 3 ){
+                	  mScannerInfo2.setText(str_Name[0] + "," + str_Name[1] + "," + str_Name[2]);
+                  } else {
+                	  mScannerInfo2.setText("ファイルが存在せーへん。");
+                  }
+                  in.close();
+                } catch (IOException e) {
+                	mScannerInfo2.setText("ファイルが存在しません。");
+                  e.printStackTrace();
+                }
+            	/*
             	Intent intent = new Intent();
             	intent.setType("image/*");
             	intent.setAction(Intent.ACTION_PICK);
             	intent = Intent.createChooser(intent,  "Select Gallery App");
             	startActivityForResult(intent, ID_IMAGE_GALLERY);
+            	*/
+            }
+        });
+    	
+    	mButtonDeleteStart.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+            	//デバッグ用
+                BufferedReader in = null;
+                try {
+                  FileInputStream fileRead = openFileInput("test.txt");
+                  in = new BufferedReader(new InputStreamReader(fileRead));
+                  String str = in.readLine();
+                  String[] str_Name = str.split(",", 0);
+                  if(str_Name.length == 3 ){
+                	  File file = new File(str_Name[2]);
+                	  file.delete();
+                	  deleteFile("test.txt");
+                  } else {
+                	  mScannerInfo2.setText("ファイルが存在ないのです。");
+                  }
+                  in.close();
+                } catch (IOException e) {
+                	mScannerInfo2.setText("ファイルが存在しません。");
+                  e.printStackTrace();
+                }
+            	/*
+            	Intent intent = new Intent();
+            	intent.setType("image/*");
+            	intent.setAction(Intent.ACTION_PICK);
+            	intent = Intent.createChooser(intent,  "Select Gallery App");
+            	startActivityForResult(intent, ID_IMAGE_GALLERY);
+            	*/
             }
         });
     	
@@ -60,6 +114,7 @@ public class FingerprintDelete extends Activity {
         });
     }
     
+    /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	// TODO Auto-generated method stub
@@ -67,6 +122,7 @@ public class FingerprintDelete extends Activity {
     	BufferedReader in = null;
     	if(requestCode == ID_IMAGE_GALLERY && resultCode == RESULT_OK) {
     		try {
+    		*/
     			/*
     			InputStream in = getContentResolver().openInputStream(data.getData());
     			Bitmap img = BitmapFactory.decodeStream(in);
@@ -75,6 +131,7 @@ public class FingerprintDelete extends Activity {
     			//imgView.setImageBitmap(img);
     			mScannerInfo2.setText("test:"+in);
     			*/
+    /*
     			Uri u = data.getData();
     			ContentResolver cr = getContentResolver();
     		    String[] columns = { MediaColumns.DATA,  MediaColumns.DISPLAY_NAME};
@@ -102,6 +159,12 @@ public class FingerprintDelete extends Activity {
     			}
     		}
     }
+    */
+    
+    
+    
+    
+    
     /*
     @Override  
     public void onWindowFocusChanged(boolean hasFocus) {  

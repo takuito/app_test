@@ -53,6 +53,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="認証状況2"/>
+        
+        <TextView 
+        android:id="@+id/tvScannerInfo3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="認証状況3"/>
     
 
 </LinearLayout>

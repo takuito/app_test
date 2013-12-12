@@ -48,6 +48,7 @@ public class FingerScan extends Activity {
 	private static TextView mMessage;
 	private static TextView mScannerInfo;
 	private static TextView mScannerInfo2;
+	private static TextView mScannerInfo3;
 	
 	private Scanner devScan = null;
 
@@ -90,6 +91,7 @@ public class FingerScan extends Activity {
     	mButtonSave = (Button) findViewById(R.id.btnSave);
     	mScannerInfo = (TextView) findViewById(R.id.tvScannerInfo);
     	mScannerInfo2 = (TextView) findViewById(R.id.tvScannerInfo2);
+    	mScannerInfo3 = (TextView) findViewById(R.id.tvScannerInfo3);
     	
     	usb_host_ctx = new UsbDeviceDataExchangeImpl(FingerScan.this, mHandler);
 
@@ -310,7 +312,7 @@ public class FingerScan extends Activity {
         try {
           FileInputStream fileRead = openFileInput("test.txt");
           in = new BufferedReader(new InputStreamReader(fileRead));
-          mScannerInfo2.setText("test:"+in.readLine());
+          mScannerInfo3.setText("test:"+in.readLine());
           in.close();
         } catch (IOException e) {
           e.printStackTrace();
