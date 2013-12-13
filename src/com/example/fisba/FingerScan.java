@@ -140,7 +140,24 @@ public class FingerScan extends Activity {
     
         mButtonSave.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	SaveImage();
+            	BufferedReader in = null;
+                try {
+                  FileInputStream fileRead = openFileInput("test.txt");
+                  in = new BufferedReader(new InputStreamReader(fileRead));
+                  String str = in.readLine();
+                  String[] str_Name = str.split(",", 0);
+                  if(str_Name.length == 3 ){
+                	  mScannerInfo2.setText("指紋認証完了");
+                  } else {
+                	  mScannerInfo2.setText("ファイルが存在せーへん。");
+                  }
+                  in.close();
+                } catch (IOException e) {
+                	mScannerInfo2.setText("指紋認証失敗");
+                  e.printStackTrace();
+                }
+            	//SaveImage();
+            	
             	/*
             	//ディレクトリ /mnt/sdcard/Android/FtrScanDemo/ を指定（SDカードが入っている状態で実行）
             	File dir = new File("/mnt/sdcard/Android/FtrScanDemo/");
