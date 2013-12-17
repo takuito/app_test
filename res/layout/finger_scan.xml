@@ -59,6 +59,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="デバッグ用2"/>
+        
+        <ImageView 
+        android:id="@+id/view1"
+        android:contentDescription="view1"
+        android:src="@drawable/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+        
+        <ImageView 
+        android:id="@+id/view2"
+        android:contentDescription="view2"
+        android:src="@drawable/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     
 
 </LinearLayout>

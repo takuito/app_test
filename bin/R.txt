@@ -5,12 +5,12 @@ int drawable ic_action_search 0x7f020001
 int drawable ic_launcher 0x7f020002
 int drawable icon 0x7f020003
 int drawable logo 0x7f020004
-int id action_settings 0x7f090016
+int id action_settings 0x7f090018
 int id btnCancel 0x7f09000f
 int id btnDataAdministration 0x7f090001
-int id btnDelete 0x7f090013
-int id btnDeleteStart 0x7f090014
-int id btnRegistrationentry 0x7f090015
+int id btnDelete 0x7f090015
+int id btnDeleteStart 0x7f090016
+int id btnRegistrationentry 0x7f090017
 int id btnSave 0x7f09000e
 int id btnScan 0x7f090000
 int id btnScanStart 0x7f09000d
@@ -28,6 +28,8 @@ int id tvMessage 0x7f09000b
 int id tvScannerInfo 0x7f090010
 int id tvScannerInfo2 0x7f090011
 int id tvScannerInfo3 0x7f090012
+int id view1 0x7f090013
+int id view2 0x7f090014
 int layout activity_main 0x7f030000
 int layout activity_select_file_format 0x7f030001
 int layout finger_scan 0x7f030002

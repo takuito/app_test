@@ -154,10 +154,19 @@ public class SelectFileFormatActivity extends Activity {
     
     public boolean isImageFolder()
     {
+    	/*ê≥éÆî≈
         //File extStorageDirectory = Environment.getExternalStorageDirectory();
     	File extStorageDirectory = getFilesDir();
     	//File data = getFilesDir();
         mDir = new File(extStorageDirectory, "Android//FtrScanDemo"); 
+        */
+        
+    	//Ç∆ÇËÇ†Ç¶Ç∏
+        File extStorageDirectory = Environment.getExternalStorageDirectory();
+        //mDir = new File(extStorageDirectory, "Android//FtrScanDemo");
+        mDir = new File(extStorageDirectory, "/mnt/sdcard/Android/FtrScanDemo");
+        
+        
         if( mDir.exists() )
         {
             if( !mDir.isDirectory() )

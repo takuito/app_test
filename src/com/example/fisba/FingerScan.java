@@ -50,6 +50,9 @@ public class FingerScan extends Activity {
 	private static TextView mScannerInfo2;
 	private static TextView mScannerInfo3;
 	
+	private static ImageView	view1;
+	private static ImageView	view2;
+	
 	private Scanner devScan = null;
 
 
@@ -78,6 +81,7 @@ public class FingerScan extends Activity {
 	public static boolean mStop = true;
 	public static boolean mUsbHostMode = true;
 	public static boolean mFrame = true;
+	public static boolean mScan = false;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,6 +96,9 @@ public class FingerScan extends Activity {
     	mScannerInfo = (TextView) findViewById(R.id.tvScannerInfo);
     	mScannerInfo2 = (TextView) findViewById(R.id.tvScannerInfo2);
     	mScannerInfo3 = (TextView) findViewById(R.id.tvScannerInfo3);
+    	
+    	view1 = (ImageView)findViewById(R.id.view1);
+		view2 = (ImageView)findViewById(R.id.view2);
     	
     	usb_host_ctx = new UsbDeviceDataExchangeImpl(FingerScan.this, mHandler);
 
@@ -141,23 +148,58 @@ public class FingerScan extends Activity {
         mButtonSave.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
             	BufferedReader in = null;
+            	
                 try {
                   FileInputStream fileRead = openFileInput("test.txt");
                   in = new BufferedReader(new InputStreamReader(fileRead));
                   String str = in.readLine();
                   String[] str_Name = str.split(",", 0);
                   if(str_Name.length == 3 ){
-                	  mScannerInfo2.setText("指紋認証完了");
+                	  mScannerInfo2.setText("データ読み込み完了");
+                	  mScan = true;
                   } else {
-                	  mScannerInfo2.setText("ファイルが存在せーへん。");
+                	  mScannerInfo2.setText("データ読み込みできへん");
+                	  mScan = false;
                   }
                   in.close();
                 } catch (IOException e) {
-                	mScannerInfo2.setText("指紋認証失敗");
+                	mScannerInfo2.setText("データ読み込み失敗");
+                	mScan = false;
                   e.printStackTrace();
                 }
-            	//SaveImage();
             	
+                if(true == mScan){
+                	//入力画像
+            		//Bitmap src = BitmapFactory.decodeResource(getResources(),R.id.view1);
+                	
+                	//Bitmap src = BitmapFactory.decodeFile("str_Name[2]");
+                	Bitmap src = BitmapFactory.decodeFile("/mnt/sdcard/Android/FtrScanDemo/test.bmp");
+                	
+            		//Bitmap src1 = src.copy(src.getConfig(), true); 
+            		Bitmap src1 = src.copy(Bitmap.Config.ARGB_8888, true);
+            		Mat image = android.BitmapToMat(src1);
+            		//テンプレート画像
+            		//src = BitmapFactory.decodeResource(getResources(),R.id.view2);
+            		src = BitmapFactory.decodeFile("/mnt/sdcard/Android/FtrScanDemo/r.bmp");
+            		Bitmap src2 = src.copy(Bitmap.Config.ARGB_8888, true);
+            		Mat templ = android.BitmapToMat(src2);
+            		//テンプレートマッチング
+            		Mat result = new Mat();
+            		Imgproc.matchTemplate(image, templ, result, Imgproc.TM_CCOEFF_NORMED);
+            		Core.MinMaxLocResult maxr = Core.minMaxLoc(result);
+            		//マッチング結果の表示
+            		org.opencv.core.Point maxp = maxr.maxLoc;
+            		org.opencv.core.Point pt2 = new Point((int)(maxp.x + templ.width()), (int)(maxp.y + templ.height()));
+            		Mat dst = image.clone();
+            		Core.rectangle(dst, maxp, pt2, new Scalar(255,0,0), 2);
+            		
+            		Toast.makeText(FingerScan.this, String.format("%s", result),Toast.LENGTH_LONG).show();
+            		Toast.makeText(FingerScan.this, String.format("%s", maxr),Toast.LENGTH_LONG).show();
+            		//Toast.makeText(MainActivity.this, String.format("%s", result),Toast.LENGTH_SHORT).show();
+            		
+            		view1.setImageBitmap(src1);
+            		view2.setImageBitmap(src2);
+                }
             	/*
             	//ディレクトリ /mnt/sdcard/Android/FtrScanDemo/ を指定（SDカードが入っている状態で実行）
             	File dir = new File("/mnt/sdcard/Android/FtrScanDemo/");
