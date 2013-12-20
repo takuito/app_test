@@ -173,7 +173,7 @@ public class FingerScan extends Activity {
             		//Bitmap src = BitmapFactory.decodeResource(getResources(),R.id.view1);
                 	
                 	//Bitmap src = BitmapFactory.decodeFile("str_Name[2]");
-                	Bitmap src = BitmapFactory.decodeFile("/mnt/sdcard/Android/FtrScanDemo/test.bmp");
+                	Bitmap src = BitmapFactory.decodeFile("/mnt/sdcard/Android/FtrScanDemo/r.bmp");
                 	
             		//Bitmap src1 = src.copy(src.getConfig(), true); 
             		Bitmap src1 = src.copy(Bitmap.Config.ARGB_8888, true);
@@ -195,6 +195,8 @@ public class FingerScan extends Activity {
             		
             		Toast.makeText(FingerScan.this, String.format("%s", result),Toast.LENGTH_LONG).show();
             		Toast.makeText(FingerScan.this, String.format("%s", maxr),Toast.LENGTH_LONG).show();
+            		Toast.makeText(FingerScan.this, String.format("%s", maxp),Toast.LENGTH_LONG).show();
+            		Toast.makeText(FingerScan.this, String.format("%s", pt2),Toast.LENGTH_LONG).show();
             		//Toast.makeText(MainActivity.this, String.format("%s", result),Toast.LENGTH_SHORT).show();
             		
             		view1.setImageBitmap(src1);

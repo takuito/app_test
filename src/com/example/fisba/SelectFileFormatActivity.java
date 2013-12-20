@@ -105,7 +105,7 @@ public class SelectFileFormatActivity extends Activity {
         
         try {
             // ストリームを開く
-        	FileOutputStream outStream = openFileOutput("test.txt", MODE_PRIVATE);
+        	FileOutputStream outStream = openFileOutput("test.txt", MODE_APPEND);
             OutputStreamWriter writer = new OutputStreamWriter(outStream);
             /*
             //ここでファイル名から拡張子を

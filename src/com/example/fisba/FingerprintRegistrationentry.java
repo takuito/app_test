@@ -209,7 +209,7 @@ public class FingerprintRegistrationentry extends Activity {
     	// 0 - save bitmap file 
         File file = new File(fileName);                
         try {
-            FileOutputStream out = new FileOutputStream(file);                    
+            FileOutputStream out = new FileOutputStream(file);
             //mBitmapFP.compress(Bitmap.CompressFormat.PNG, 90, out);
             MyBitmapFile fileBMP = new MyBitmapFile(mImageWidth, mImageHeight, mImageFP);
             out.write(fileBMP.toBytes());
@@ -251,7 +251,7 @@ public class FingerprintRegistrationentry extends Activity {
             // ストリームを開く
         	FileOutputStream outStream = openFileOutput("test.txt", MODE_APPEND);
             OutputStreamWriter writer = new OutputStreamWriter(outStream);
-            writer.write(fileName);
+            writer.write(fileName + ",");
             writer.flush();
             writer.close();
         } catch (IOException e) {
