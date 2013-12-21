@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -56,7 +57,8 @@ public class FingerprintDelete extends Activity {
                   in = new BufferedReader(new InputStreamReader(fileRead));
                   String str = in.readLine();
                   String[] str_Name = str.split(",", 0);
-                  if(str_Name.length == 3 ){
+                  Toast.makeText(FingerprintDelete.this, String.format("%d", str_Name.length),Toast.LENGTH_SHORT).show();
+                  if( (str_Name.length % 3) == 0 ){
                 	  mScannerInfo2.setText(str_Name[0] + "," + str_Name[1] + "," + str_Name[2]);
                   } else {
                 	  mScannerInfo2.setText("ファイルが存在せーへん。");
@@ -85,7 +87,7 @@ public class FingerprintDelete extends Activity {
                   in = new BufferedReader(new InputStreamReader(fileRead));
                   String str = in.readLine();
                   String[] str_Name = str.split(",", 0);
-                  if(str_Name.length == 3 ){
+                  if( (str_Name.length % 3) == 0 ){
                 	  File file = new File(str_Name[2]);
                 	  file.delete();
                 	  deleteFile("test.txt");

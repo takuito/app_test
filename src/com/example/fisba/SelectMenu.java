@@ -11,7 +11,7 @@ public class SelectMenu extends Activity {
     /** Called when the activity is first created. */
 	private static Button mButtonRegistrationentry;
 	private static Button mButtonDelete;
-	//private static Button mButtonEdit;
+	private static Button mButtonEdit;
 	private static Button mButtonCancel;
 
     @Override
@@ -21,7 +21,7 @@ public class SelectMenu extends Activity {
 
         mButtonRegistrationentry = (Button) findViewById(R.id.btnRegistrationentry);
         mButtonDelete = (Button) findViewById(R.id.btnDelete);
-        //mButtonEdit = (Button) findViewById(R.id.btnEdit);
+        mButtonEdit = (Button) findViewById(R.id.btnEdit);
     	mButtonCancel = (Button) findViewById(R.id.btnCancel);
     	
     	mButtonRegistrationentry.setOnClickListener(new OnClickListener() {
@@ -38,13 +38,13 @@ public class SelectMenu extends Activity {
             }
         });
     	
-    	/*
+    	
     	mButtonEdit.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	setContentView(R.layout.activity_main);
+            	Intent serverIntent = new Intent(SelectMenu.this, FingerprintEdit.class);
+        	    startActivityForResult(serverIntent, 1);
             }
         });
-    	*/
 
         mButtonCancel.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
