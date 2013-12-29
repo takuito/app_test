@@ -19,17 +19,17 @@
 
     
     <Button 
-        android:id="@+id/btnDelete"
+        android:id="@+id/btnEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="指紋削除"
+        android:text="指紋編集"
         />
     
     <Button 
-        android:id="@+id/btnDeleteStart"
+        android:id="@+id/btnEditStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="指紋削除実行"
+        android:text="指紋編集実行"
         />
 
     <Button 

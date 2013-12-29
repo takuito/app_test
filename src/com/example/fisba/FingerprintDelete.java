@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -87,6 +88,7 @@ public class FingerprintDelete extends Activity {
                   in = new BufferedReader(new InputStreamReader(fileRead));
                   String str = in.readLine();
                   String[] str_Name = str.split(",", 0);
+                  //setData data = new setData(ÅiInteger)str_Name[0],str_Name[1],str_Name[2]);
                   if( (str_Name.length % 3) == 0 ){
                 	  File file = new File(str_Name[2]);
                 	  file.delete();
@@ -115,7 +117,7 @@ public class FingerprintDelete extends Activity {
             }
         });
     }
-    
+        
     /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -255,3 +257,15 @@ public class FingerprintDelete extends Activity {
     }
     */
 }
+
+class setData{
+	  Integer num;
+	  String name;
+	  String path;
+	  
+	  void setData(Integer num, String name, String path){
+		  this.num = num;
+		  this.name = name;
+		  this.path = path;
+	  }
+  }
