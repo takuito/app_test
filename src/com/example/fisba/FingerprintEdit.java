@@ -28,6 +28,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
+import android.widget.CheckedTextView;
 
 public class FingerprintEdit extends Activity {
 	public final static int ID_IMAGE_GALLERY = 1;
@@ -37,6 +38,8 @@ public class FingerprintEdit extends Activity {
 	//private static String[] str_Name;
 	
 	private static TextView mScannerInfo2;
+	
+	private static ListView listView;
 	
     /** Called when the activity is first created. */
 	private static Button mButtonCancel;
@@ -71,7 +74,7 @@ public class FingerprintEdit extends Activity {
                   if( (str_Name.length % 3) == 0 ){
                 	  mScannerInfo2.setText(str_Name[0] + "," + str_Name[1] + "," + str_Name[2]);
                 	  //String[] set_Name = str_Name.substring(2);
-                	  ListView listView = (ListView)findViewById(R.id.ListView);  
+                	  listView = (ListView)findViewById(R.id.ListView);  
                 	  
                 	  ArrayList<String> test_data = new ArrayList<String>();
                 	  for(int i = 0; i < str_Name.length/3; i++){
@@ -136,6 +139,17 @@ public class FingerprintEdit extends Activity {
                   in = new BufferedReader(new InputStreamReader(fileRead));
                   String str = in.readLine();
                   String[] str_Name = str.split(",", 0);
+                  
+                  String msg = "i:";
+                  for(int i =0;i<listView.getChildCount();i++){
+                	  CheckedTextView check = (CheckedTextView)listView.getChildAt(i);
+                	  if(check.isChecked()){
+                		  msg += check.getText() + "," +str_Name[i*3+0] + "," +str_Name[i*3+1] + "," +str_Name[i*3+2];
+                	  }
+                  }
+                  //msg += msg.substring(0, msg.length()-1);
+                  Toast.makeText(FingerprintEdit.this, msg, Toast.LENGTH_LONG).show();
+                  /*
                   if( (str_Name.length % 3) == 0 ){
                 	  File file = new File(str_Name[2]);
                 	  file.delete();
@@ -143,6 +157,7 @@ public class FingerprintEdit extends Activity {
                   } else {
                 	  mScannerInfo2.setText("ファイルが存在ないのです。");
                   }
+                  */
                   in.close();
                 } catch (IOException e) {
                 	mScannerInfo2.setText("ファイルが存在しません。");

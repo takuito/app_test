@@ -3,11 +3,15 @@ package com.example.fisba;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 
+
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -18,10 +22,16 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore.MediaColumns;
+import android.util.SparseBooleanArray;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 import android.view.View.OnClickListener;
 
 public class FingerprintDelete extends Activity {
@@ -30,6 +40,7 @@ public class FingerprintDelete extends Activity {
 	private static final int REQUEST_GALLERY = 0;
 	
 	private static TextView mScannerInfo2;
+	private static ListView listView;
 	
     /** Called when the activity is first created. */
 	private static Button mButtonCancel;
@@ -44,10 +55,8 @@ public class FingerprintDelete extends Activity {
         mButtonDelete = (Button) findViewById(R.id.btnDelete);
         mButtonDeleteStart = (Button) findViewById(R.id.btnDeleteStart);
     	mButtonCancel = (Button) findViewById(R.id.btnCancel);
-    	
 
     	mScannerInfo2 = (TextView) findViewById(R.id.tvScannerInfo2);
-
     	
     	mButtonDelete.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -61,6 +70,49 @@ public class FingerprintDelete extends Activity {
                   Toast.makeText(FingerprintDelete.this, String.format("%d", str_Name.length),Toast.LENGTH_SHORT).show();
                   if( (str_Name.length % 3) == 0 ){
                 	  mScannerInfo2.setText(str_Name[0] + "," + str_Name[1] + "," + str_Name[2]);
+                	  //String[] set_Name = str_Name.substring(2);
+                	  listView = (ListView)findViewById(R.id.ListView);  
+                	  
+                	  ArrayList<String> test_data = new ArrayList<String>();
+                	  for(int i = 0; i < str_Name.length/3; i++){
+                		  test_data.add(str_Name[i*3+1]);
+                	  }
+                	  
+                      // アダプタの作成  
+                      listView.setAdapter(new ArrayAdapter<String>(  
+                          FingerprintDelete.this,  
+                          android.R.layout.simple_list_item_multiple_choice,  
+                          test_data)
+                      );
+                    
+                      // フォーカスが当たらないよう設定  
+                      listView.setItemsCanFocus(false);  
+                    
+                      // 選択の方式の設定  
+                      listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);  
+                        
+                      for (int i = 1; i < 6; i++) {  
+                        // 指定したアイテムがチェックされているかを設定  
+                        listView.setItemChecked(i, true);  
+                      }
+                        
+                      // アイテムがクリックされたときに呼び出されるコールバックを登録  
+                      listView.setOnItemClickListener(new OnItemClickListener() {  
+                        @Override  
+                        public void onItemClick(AdapterView<?> parent,  
+                                View view, int position, long id) {  
+                            // クリックされた時の処理  
+                        }  
+                      });  
+                        
+                      // 現在チェックされているアイテムを取得  
+                      // チェックされてないアイテムは含まれない模様  
+                      SparseBooleanArray checked = listView.getCheckedItemPositions();  
+                      for (int i = 0; i < checked.size(); i++) {  
+                        // チェックされているアイテムの key の取得  
+                        int key = checked.keyAt(i);  
+                        //Log.v(getClass().getSimpleName(), "values: " + DAYS[key]);  
+                      }
                   } else {
                 	  mScannerInfo2.setText("ファイルが存在せーへん。");
                   }
@@ -69,13 +121,6 @@ public class FingerprintDelete extends Activity {
                 	mScannerInfo2.setText("ファイルが存在しません。");
                   e.printStackTrace();
                 }
-            	/*
-            	Intent intent = new Intent();
-            	intent.setType("image/*");
-            	intent.setAction(Intent.ACTION_PICK);
-            	intent = Intent.createChooser(intent,  "Select Gallery App");
-            	startActivityForResult(intent, ID_IMAGE_GALLERY);
-            	*/
             }
         });
     	
@@ -89,6 +134,8 @@ public class FingerprintDelete extends Activity {
                   String str = in.readLine();
                   String[] str_Name = str.split(",", 0);
                   //setData data = new setData(（Integer)str_Name[0],str_Name[1],str_Name[2]);
+                  
+                  /*
                   if( (str_Name.length % 3) == 0 ){
                 	  File file = new File(str_Name[2]);
                 	  file.delete();
@@ -96,7 +143,37 @@ public class FingerprintDelete extends Activity {
                   } else {
                 	  mScannerInfo2.setText("ファイルが存在ないのです。");
                   }
+                  */
                   in.close();
+                  
+                  String msg = "i:";
+                  for(int i =0;i<listView.getChildCount();i++){
+                	  CheckedTextView check = (CheckedTextView)listView.getChildAt(i);
+                	  if(check.isChecked()){
+                		  try {
+                	            // ストリームを開く
+                	        	FileOutputStream outStream = openFileOutput("test.txt", MODE_PRIVATE);
+                	            OutputStreamWriter writer = new OutputStreamWriter(outStream);
+                	            File file = new File(str_Name[i*3+2]);
+                	            file.delete();
+                    	  
+                	            str = str.replaceAll(str_Name[i*3+0],"");
+                	            str = str.replaceAll(str_Name[i*3+1],"");
+                	            str = str.replaceAll(str_Name[i*3+2],"");
+                    	  
+                	            msg += check.getText() + "," +str_Name[i*3+0] + "," +str_Name[i*3+1] + "," +str_Name[i*3+2];
+                	            writer.write(str);
+                	            writer.flush();
+                	            writer.close();
+                	        } catch (IOException e) {
+                	            e.printStackTrace();
+                	        }
+                	  }
+                  }
+                  //msg += msg.substring(0, msg.length()-1);
+                  Toast.makeText(FingerprintDelete.this, msg, Toast.LENGTH_LONG).show();
+                  
+                  //in.close();
                 } catch (IOException e) {
                 	mScannerInfo2.setText("ファイルが存在しません。");
                   e.printStackTrace();
@@ -117,148 +194,8 @@ public class FingerprintDelete extends Activity {
             }
         });
     }
-        
-    /*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	// TODO Auto-generated method stub
-    	
-    	BufferedReader in = null;
-    	if(requestCode == ID_IMAGE_GALLERY && resultCode == RESULT_OK) {
-    		try {
-    		*/
-    			/*
-    			InputStream in = getContentResolver().openInputStream(data.getData());
-    			Bitmap img = BitmapFactory.decodeStream(in);
-    			in.close();
-    			// 選択した画像を表示
-    			//imgView.setImageBitmap(img);
-    			mScannerInfo2.setText("test:"+in);
-    			*/
-    /*
-    			Uri u = data.getData();
-    			ContentResolver cr = getContentResolver();
-    		    String[] columns = { MediaColumns.DATA,  MediaColumns.DISPLAY_NAME};
-    		    Cursor c = cr.query(u, columns, null, null, null);
-    		    if(c==null) return;
-    		    c.moveToFirst();
-    		    int i = c.getColumnIndex(MediaColumns.DISPLAY_NAME);
-    		    String s = c.getString(i);
-    		    mScannerInfo2.setText("test:"+s);
-    		    c.close();
-    		    
-    		    FileInputStream fileRead = openFileInput("test.txt");
-    	        in = new BufferedReader(new InputStreamReader(fileRead));
-    	        //mScannerInfo2.setText("test2:"+in.readLine());
-    	        
-    	        String str = in.readLine();
-    	        String[] str_Name = str.split(",", 0);
-    	        
-    	        if(s == str_Name[1]){
-    	        	mScannerInfo2.setText("test2:"+in.readLine());
-    	        }
-    	        in.close();
-    			} catch (Exception e) {
-    				
-    			}
-    		}
-    }
-    */
-    
-    
-    
-    
-    
-    /*
-    @Override  
-    public void onWindowFocusChanged(boolean hasFocus) {  
-     super.onWindowFocusChanged(hasFocus);  
-     
-     width = layout.getWidth();  
-     height = layout.getHeight();  
-    }  
-     
-    @Override  
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
-     super.onActivityResult(requestCode, resultCode, data);  
-     
-     if (resultCode == RESULT_OK) {  
-      switch (requestCode) {  
-       case ID_IMAGE_GALLERY:  
-        Uri uri = data.getData();  
-     
-        Intent intent = new Intent("com.android.camera.action.CROP");  
-        intent.setType("image/*");  
-        intent.setData(uri);  
-        intent.putExtra("outputX", width);  
-        intent.putExtra("outputY", height);  
-        intent.putExtra("aspectX", width);  
-        intent.putExtra("aspectY", height);  
-        intent.putExtra("scale", true);  
-        intent.putExtra("setWallpaper", false);  
-        intent.putExtra("noFaceDetection", false);  
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, "");  
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.name());  
-        intent = Intent.createChooser(intent, "Select Crop App");  
-     
-        startActivityForResult(intent, ID_IMAGE_CROP);  
-        break;  
-       case ID_IMAGE_CROP:  
-        try {  
-         // 一時ファイル場所のUri取得処理  
-         Uri mUri = data.getData();  
-         if (mUri == null) {  
-          String action = data.getAction();  
-          if (action != null && action.indexOf("content://") > -1) {  
-           mUri = Uri.parse(action);  
-          }  
-         }  
-     
-         // uriがしっかりと取れているようなら/files/の領域へコピーして一時保存用削除  
-         if (mUri != null) {  
-          ContentResolver cr = getContentResolver();  
-          String[] columns = { MediaColumns.DATA };  
-          Cursor c = cr.query(mUri, columns, null, null, null);  
-          if (c != null && c.moveToFirst()) {  
-           // 一時ファイル  
-           File ifilepath = new File(c.getString(0));  
-           // ローカル保存用ファイル  
-           File ofilepath = new File(getFileStreamPath(bgimage).getPath());  
-     
-           FileChannel ifile = new FileInputStream(ifilepath).getChannel();  
-           FileChannel ofile = new FileOutputStream(ofilepath).getChannel();  
-     
-           // ファイルコピー  
-           ifile.transferTo(0, ifile.size(), ofile);  
-     
-           // クローズ処理  
-           ifile.close();  
-           ofile.close();  
-     
-           // 一時ファイルの削除  
-           getContentResolver().delete(mUri, null, null);  
-     
-           if (layout != null) {  
-            layout.setBackgroundDrawable(rntBGImage());  
-           }  
-     
-           Toast.makeText(this, "Complete", Toast.LENGTH_SHORT).show();  
-          } else {  
-           Toast.makeText(this, "Miss", Toast.LENGTH_SHORT).show();  
-          }  
-         }  
-        } catch (Exception e) {  
-         Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();  
-         e.printStackTrace();  
-        }  
-        break;  
-      }  
-     }  
-    }
-    */
-}
 
-class setData{
+    class setData{
 	  Integer num;
 	  String name;
 	  String path;
@@ -268,4 +205,5 @@ class setData{
 		  this.name = name;
 		  this.path = path;
 	  }
-  }
+    }
+}

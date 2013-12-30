@@ -5,12 +5,12 @@ int drawable ic_action_search 0x7f020001
 int drawable ic_launcher 0x7f020002
 int drawable icon 0x7f020003
 int drawable logo 0x7f020004
-int id ListView 0x7f090017
+int id ListView 0x7f090015
 int id action_settings 0x7f09001b
 int id btnCancel 0x7f09000f
 int id btnDataAdministration 0x7f090001
-int id btnDelete 0x7f090015
-int id btnDeleteStart 0x7f090016
+int id btnDelete 0x7f090016
+int id btnDeleteStart 0x7f090017
 int id btnEdit 0x7f090018
 int id btnEditStart 0x7f090019
 int id btnRegistrationentry 0x7f09001a
