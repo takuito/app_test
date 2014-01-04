@@ -35,7 +35,8 @@ public class SelectFileFormatActivity extends Activity {
 	
 	//データ管理用
 	private String mScanName;
-	private int mScan_num = 0; 
+	private int mScan_num;
+	public static boolean mSuperscription = false;
     // Return Intent extra
     public static String EXTRA_FILE_FORMAT = "file_format";
     
@@ -46,7 +47,7 @@ public class SelectFileFormatActivity extends Activity {
         mButtonOK = (Button) findViewById(R.id.buttonOK);
         mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
         mRadioBitmap = (RadioButton) findViewById(R.id.radioBitmap);
-        mRadioWSQ = (RadioButton) findViewById(R.id.radioWSQ);
+        //mRadioWSQ = (RadioButton) findViewById(R.id.radioWSQ);
         mEditFileName = (EditText) findViewById(R.id.editFileName);
         mMessage = (TextView) findViewById(R.id.textMessage);
         
@@ -114,10 +115,14 @@ public class SelectFileFormatActivity extends Activity {
         	else 
         		mFileName = mFileName.replaceAll(".wsq","");
              */
-            writer.write(mScan_num + "," + mFileName + ",");
-            writer.flush();
+            
+            if(false == mSuperscription){
+            	FingerprintRegistrationentry.mRegistrationentry_num++;
+            	//mScan_num ++;
+                writer.write(FingerprintRegistrationentry.mRegistrationentry_num + "," + mFileName + ",");
+                writer.flush();
+            }
             writer.close();
-            mScan_num ++;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -136,7 +141,8 @@ public class SelectFileFormatActivity extends Activity {
             .setTitle("File name") 
             .setMessage("File already exists. Do you want replace it?") 
             .setPositiveButton("Yes", new DialogInterface.OnClickListener() { 
-                 public void onClick(DialogInterface dialog, int whichButton) { 
+                 public void onClick(DialogInterface dialog, int whichButton) {
+                	 mSuperscription = true;
                 	 SetFileName();              	
                  } 
             }) 

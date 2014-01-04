@@ -60,6 +60,8 @@ public class FingerprintRegistrationentry extends Activity {
     
 	private FPRegistrationentry mFPScan = null;
 	
+	public static int mRegistrationentry_num = 0;
+	
 	// Intent request codes
     private static final int REQUEST_FILE_FORMAT = 1;
 	private UsbDeviceDataExchangeImpl usb_host_ctx = null;
@@ -247,15 +249,19 @@ public class FingerprintRegistrationentry extends Activity {
             e.printStackTrace();
         }
         */
-        try {
-            // ストリームを開く
-        	FileOutputStream outStream = openFileOutput("test.txt", MODE_APPEND);
-            OutputStreamWriter writer = new OutputStreamWriter(outStream);
-            writer.write(fileName + ",");
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(false == SelectFileFormatActivity.mSuperscription){
+        	try {
+        		// ストリームを開く
+        		FileOutputStream outStream = openFileOutput("test.txt", MODE_APPEND);
+        		OutputStreamWriter writer = new OutputStreamWriter(outStream);
+        		writer.write(fileName + ",");
+        		writer.flush();
+        		writer.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+        }else{
+        	SelectFileFormatActivity.mSuperscription = false;
         }
         
         //デバッグ用

@@ -46,6 +46,8 @@ public class FingerprintDelete extends Activity {
 	private static Button mButtonCancel;
 	private static Button mButtonDelete;
 	private static Button mButtonDeleteStart;
+	
+	ArrayAdapter<String> adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,20 +68,22 @@ public class FingerprintDelete extends Activity {
                   FileInputStream fileRead = openFileInput("test.txt");
                   in = new BufferedReader(new InputStreamReader(fileRead));
                   String str = in.readLine();
+                  if(str!=null){
                   String[] str_Name = str.split(",", 0);
                   Toast.makeText(FingerprintDelete.this, String.format("%d", str_Name.length),Toast.LENGTH_SHORT).show();
-                  if( (str_Name.length % 3) == 0 ){
+                  if( ((str_Name.length % 3) == 0 )&&(str_Name.length!=0)){
                 	  mScannerInfo2.setText(str_Name[0] + "," + str_Name[1] + "," + str_Name[2]);
                 	  //String[] set_Name = str_Name.substring(2);
                 	  listView = (ListView)findViewById(R.id.ListView);  
                 	  
                 	  ArrayList<String> test_data = new ArrayList<String>();
                 	  for(int i = 0; i < str_Name.length/3; i++){
-                		  test_data.add(str_Name[i*3+1]);
+                		  //if("" != str_Name[i*3+1])
+                			  test_data.add(str_Name[i*3+1]);
                 	  }
                 	  
                       // アダプタの作成  
-                      listView.setAdapter(new ArrayAdapter<String>(  
+                      listView.setAdapter(adapter = new ArrayAdapter<String>(  
                           FingerprintDelete.this,  
                           android.R.layout.simple_list_item_multiple_choice,  
                           test_data)
@@ -104,7 +108,7 @@ public class FingerprintDelete extends Activity {
                             // クリックされた時の処理  
                         }  
                       });  
-                        
+                  }
                       // 現在チェックされているアイテムを取得  
                       // チェックされてないアイテムは含まれない模様  
                       SparseBooleanArray checked = listView.getCheckedItemPositions();  
@@ -135,6 +139,8 @@ public class FingerprintDelete extends Activity {
                   String[] str_Name = str.split(",", 0);
                   //setData data = new setData(（Integer)str_Name[0],str_Name[1],str_Name[2]);
                   
+                  
+                  //deleteFile("test.txt");
                   /*
                   if( (str_Name.length % 3) == 0 ){
                 	  File file = new File(str_Name[2]);
@@ -160,10 +166,15 @@ public class FingerprintDelete extends Activity {
                 	            str = str.replaceAll(str_Name[i*3+0],"");
                 	            str = str.replaceAll(str_Name[i*3+1],"");
                 	            str = str.replaceAll(str_Name[i*3+2],"");
+                	            
+                	            str = str.replaceAll(",,","");
+                	            
+                	            adapter.remove(str_Name[i*3+1]);
                     	  
                 	            msg += check.getText() + "," +str_Name[i*3+0] + "," +str_Name[i*3+1] + "," +str_Name[i*3+2];
                 	            writer.write(str);
                 	            writer.flush();
+                	            //deleteFile("test.txt");
                 	            writer.close();
                 	        } catch (IOException e) {
                 	            e.printStackTrace();

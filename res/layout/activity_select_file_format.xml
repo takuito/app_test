@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:text="Please select the file format to save." />
     
-    <RadioGroup
+   <RadioGroup
         android:id="@+id/radioGroup1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,11 +27,6 @@
             android:checked="true"
             android:text="Bitmap" />
 
-        <RadioButton
-            android:id="@+id/radioWSQ"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="WSQ" />
     </RadioGroup>
     
 	<LinearLayout

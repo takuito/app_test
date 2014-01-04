@@ -57,10 +57,6 @@ public class FingerprintEdit extends Activity {
     	
     	mScannerInfo2 = (TextView) findViewById(R.id.tvScannerInfo2);
         
-    	
-    	  
-
-        
         mButtonEdit.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
             	//デバッグ用
@@ -87,20 +83,13 @@ public class FingerprintEdit extends Activity {
                       // アダプタの作成  
                       listView.setAdapter(new ArrayAdapter<String>(  
                           FingerprintEdit.this,  
-                          android.R.layout.simple_list_item_multiple_choice,  
+                          android.R.layout.simple_list_item_1,  
                           test_data)
                       );
                     
                       // フォーカスが当たらないよう設定  
-                      listView.setItemsCanFocus(false);  
-                    
-                      // 選択の方式の設定  
-                      listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);  
-                        
-                      for (int i = 1; i < 6; i++) {  
-                        // 指定したアイテムがチェックされているかを設定  
-                        listView.setItemChecked(i, true);  
-                      }
+                      listView.setItemsCanFocus(false);
+                      
                         
                       // アイテムがクリックされたときに呼び出されるコールバックを登録  
                       listView.setOnItemClickListener(new OnItemClickListener() {  
@@ -110,15 +99,6 @@ public class FingerprintEdit extends Activity {
                             // クリックされた時の処理  
                         }  
                       });  
-                        
-                      // 現在チェックされているアイテムを取得  
-                      // チェックされてないアイテムは含まれない模様  
-                      SparseBooleanArray checked = listView.getCheckedItemPositions();  
-                      for (int i = 0; i < checked.size(); i++) {  
-                        // チェックされているアイテムの key の取得  
-                        int key = checked.keyAt(i);  
-                        //Log.v(getClass().getSimpleName(), "values: " + DAYS[key]);  
-                      }
                   } else {
                 	  mScannerInfo2.setText("ファイルが存在せーへん。");
                   }
@@ -130,6 +110,7 @@ public class FingerprintEdit extends Activity {
             }
         });
     	
+        /*
     	mButtonEditStart.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
             	//デバッグ用
@@ -149,15 +130,6 @@ public class FingerprintEdit extends Activity {
                   }
                   //msg += msg.substring(0, msg.length()-1);
                   Toast.makeText(FingerprintEdit.this, msg, Toast.LENGTH_LONG).show();
-                  /*
-                  if( (str_Name.length % 3) == 0 ){
-                	  File file = new File(str_Name[2]);
-                	  file.delete();
-                	  deleteFile("test.txt");
-                  } else {
-                	  mScannerInfo2.setText("ファイルが存在ないのです。");
-                  }
-                  */
                   in.close();
                 } catch (IOException e) {
                 	mScannerInfo2.setText("ファイルが存在しません。");
@@ -165,6 +137,7 @@ public class FingerprintEdit extends Activity {
                 }
             }
         });
+    	*/
     	
     	
         mButtonCancel.setOnClickListener(new OnClickListener() {
