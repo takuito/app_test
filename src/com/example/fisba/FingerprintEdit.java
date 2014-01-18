@@ -174,7 +174,7 @@ public class FingerprintEdit extends Activity {
 				 
 				 BufferedReader in = null;
 				 try {
-					 FileInputStream fileRead = openFileInput("test.txt");
+					  FileInputStream fileRead = openFileInput("test.txt");
 	                  in = new BufferedReader(new InputStreamReader(fileRead));
 	                  String str = in.readLine();
 	                  String[] str_Name = str.split(",", 0);
@@ -197,6 +197,18 @@ public class FingerprintEdit extends Activity {
 			        } catch (IOException e) {
 			            e.printStackTrace();
 			        }
+				 
+				 //Intent intent = new Intent(Intent.ACTION_VIEW);
+				 //intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("uri"));
+				 //intent.setType("image/*");
+				 //startActivity(intent);
+				 
+				 /* ‰æ‘œ‚ð•\Ž¦*/
+				 Intent intent = new Intent();  
+				 intent.setType("image/*");  
+				 intent.setAction(Intent.ACTION_VIEW);  
+				 intent.setData(uri);
+				 startActivity(intent);
 				 
 				 /*
 				 try {  
@@ -229,21 +241,4 @@ public class FingerprintEdit extends Activity {
              break;            
         }
     }
-
-      class data{
-    	  Integer num;
-    	  String name;
-    	  String path;
-    	  
-    	  void setData(Integer num, String name, String path){
-    		  this.num = num;
-    		  this.name = name;
-    		  this.path = path;
-    	  }
-      }
-      
-      // ListView ‚É•\Ž¦‚³‚¹‚é•¶Žš—ñ  
-      private static final String[] DAYS = new String[] {
-    	  "Sunday", "Monday", "Tuesday", "Wednesday"
-      };
 }

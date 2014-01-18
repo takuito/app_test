@@ -29,6 +29,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Bitmap.Config;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -83,6 +84,12 @@ public class FingerScan extends Activity {
 	public static boolean mFrame = true;
 	public static boolean mScan = false;
 	
+	private static String mFilePath = null;
+	private static boolean mGetFilePath = false;
+	
+	//デバッグ用
+	private static boolean mDebug = false;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -103,7 +110,7 @@ public class FingerScan extends Activity {
     	usb_host_ctx = new UsbDeviceDataExchangeImpl(FingerScan.this, mHandler);
 
     	mButtonScanStart.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(View v) {            	
         		if( mFPScan != null )
         		{
         			mStop = true;
@@ -111,6 +118,12 @@ public class FingerScan extends Activity {
         			
         		}
         		mStop = false;
+        		
+        		mDebug = true;
+            	if(true == mDebug){
+            		FingerScanSuccess("a.bmp");
+            	}
+            	
         		if(mUsbHostMode)
         		{
 	        		usb_host_ctx.CloseDevice();
@@ -120,7 +133,6 @@ public class FingerScan extends Activity {
 	        			if( StartScan() )
 		        		{
 	        				mButtonScanStart.setEnabled(true);
-	    	            	//mCheckUsbHostMode.setEnabled(true);
 	    	            	mButtonCancel.setEnabled(false);
 		        		}	
 	                }
@@ -128,7 +140,9 @@ public class FingerScan extends Activity {
 	            	{
 	            		if(!usb_host_ctx.IsPendingOpen())
 	            		{
-	            			Toast.makeText(FingerScan.this, "false",Toast.LENGTH_LONG).show();
+	                    	if(true == mDebug){
+	                    		FingerScanSuccess("a.bmp");
+	                    	}
 	            			mMessage.setText("Can not start scan operation.\nCan't open scanner device");
 	            		}
 	            	}    
@@ -138,7 +152,6 @@ public class FingerScan extends Activity {
         			if( StartScan() )
 	        		{
         				mButtonScanStart.setEnabled(true);
-    	            	//mCheckUsbHostMode.setEnabled(true);
     	            	mButtonCancel.setEnabled(false);
 	        		}	
         		}
@@ -168,6 +181,7 @@ public class FingerScan extends Activity {
                   e.printStackTrace();
                 }
             	
+                FingerScanSuccess("a.bmp");
                 if(true == mScan){
                 	//入力画像
             		//Bitmap src = BitmapFactory.decodeResource(getResources(),R.id.view1);
@@ -201,6 +215,8 @@ public class FingerScan extends Activity {
             		
             		view1.setImageBitmap(src1);
             		view2.setImageBitmap(src2);
+
+            		FingerScanSuccess("a.bmp");
                 }
             	/*
             	//ディレクトリ /mnt/sdcard/Android/FtrScanDemo/ を指定（SDカードが入っている状態で実行）
@@ -274,6 +290,57 @@ public class FingerScan extends Activity {
     {
     	Intent serverIntent = new Intent(FingerScan.this, SelectFileFormatActivity.class);
 	    startActivityForResult(serverIntent, 1);
+    }
+    
+    /* 認証成功後に画像表示 */
+    private void FingerScanSuccess(String fileName)
+    {
+    	String[] str_Name = null;
+    	BufferedReader in = null;
+		try {
+			 FileInputStream fileRead = openFileInput("hensyu.txt");
+             in = new BufferedReader(new InputStreamReader(fileRead));
+             String str = in.readLine();
+             str_Name = str.split(",", 0);
+             //Toast.makeText(FingerprintEdit.this, String.format("%d", str_Name.length),Toast.LENGTH_SHORT).show();
+             if( ((str_Name.length % 2) == 0) &&(str_Name.length!=0)){
+            	 for(int i = 0; i < str_Name.length/2; i++){
+            		 if(str_Name[i*2].equals(fileName)){
+            			 mGetFilePath = true;
+            			 mFilePath = str_Name[i*2 + 1];
+            		 }
+            	 }
+           		  //setFilename = str_Name[click_num*3+1];
+           	  }
+             in.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		 
+		//mGetFilePath = true;
+		//mFilePath = str_Name[0 + 1];
+		if(true == mGetFilePath){
+	    	/*
+			try {
+	    		// ストリームを開く
+	    		FileOutputStream outStream = openFileOutput("hensyu.txt", MODE_APPEND);
+	    		OutputStreamWriter writer = new OutputStreamWriter(outStream);
+	    		writer.write(setFilename + "," + uri + ",");
+	    		writer.flush();
+	    		writer.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    	*/
+	    	//Uri uri = Uri.fromFile(mFilePath);
+	    	/* 画像を表示*/
+			 Intent intent = new Intent();  
+			 intent.setType("image/*");  
+			 intent.setAction(Intent.ACTION_VIEW);  
+			 intent.setData(Uri.parse(mFilePath));
+			 startActivity(intent);
+		}
+		mGetFilePath = false;
     }
     
     private void SaveImageByFileFormat(String fileFormat, String fileName)

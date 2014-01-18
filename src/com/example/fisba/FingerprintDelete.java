@@ -189,13 +189,6 @@ public class FingerprintDelete extends Activity {
                 	mScannerInfo2.setText("ファイルが存在しません。");
                   e.printStackTrace();
                 }
-            	/*
-            	Intent intent = new Intent();
-            	intent.setType("image/*");
-            	intent.setAction(Intent.ACTION_PICK);
-            	intent = Intent.createChooser(intent,  "Select Gallery App");
-            	startActivityForResult(intent, ID_IMAGE_GALLERY);
-            	*/
             }
         });
     	
@@ -204,17 +197,5 @@ public class FingerprintDelete extends Activity {
             	finish();
             }
         });
-    }
-
-    class setData{
-	  Integer num;
-	  String name;
-	  String path;
-	  
-	  void setData(Integer num, String name, String path){
-		  this.num = num;
-		  this.name = name;
-		  this.path = path;
-	  }
     }
 }
