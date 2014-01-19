@@ -10,6 +10,11 @@
     <string name="edit">指紋編集</string>
     <string name="data_administration">データ管理</string>
     
+    <string name="delete_start">指紋削除実行</string>
+    <string name="ｓcan_start">指紋認証開始</string>
+    <string name="save">指紋保存</string>
+    
+    
     <string name="scan_text">指紋認証機器に指を置いて下さい</string>
     <string name="registrationentry_text">指紋データ登録名を入力して下さい</string>
     <string name="delete_text">を削除しますか？</string>

@@ -139,17 +139,6 @@ public class FingerprintDelete extends Activity {
                   String[] str_Name = str.split(",", 0);
                   //setData data = new setData(（Integer)str_Name[0],str_Name[1],str_Name[2]);
                   
-                  
-                  //deleteFile("test.txt");
-                  /*
-                  if( (str_Name.length % 3) == 0 ){
-                	  File file = new File(str_Name[2]);
-                	  file.delete();
-                	  deleteFile("test.txt");
-                  } else {
-                	  mScannerInfo2.setText("ファイルが存在ないのです。");
-                  }
-                  */
                   in.close();
                   
                   String msg = "i:";
@@ -160,18 +149,27 @@ public class FingerprintDelete extends Activity {
                 	            // ストリームを開く
                 	        	FileOutputStream outStream = openFileOutput("test.txt", MODE_PRIVATE);
                 	            OutputStreamWriter writer = new OutputStreamWriter(outStream);
+                	            
+                	            //ファイル削除
                 	            File file = new File(str_Name[i*3+2]);
                 	            file.delete();
                     	  
+                	            /*
                 	            str = str.replaceAll(str_Name[i*3+0],"");
                 	            str = str.replaceAll(str_Name[i*3+1],"");
                 	            str = str.replaceAll(str_Name[i*3+2],"");
-                	            
                 	            str = str.replaceAll(",,","");
+                	            */
                 	            
+                	            str = str.replaceAll(str_Name[i*3+0]+","+str_Name[i*3+2]+","+str_Name[i*3+2]+",","");
+                	            
+                	            //リストビューから削除
                 	            adapter.remove(str_Name[i*3+1]);
                     	  
+                	            //デバッグ用
                 	            msg += check.getText() + "," +str_Name[i*3+0] + "," +str_Name[i*3+1] + "," +str_Name[i*3+2];
+                	            
+                	            //ファイル更新
                 	            writer.write(str);
                 	            writer.flush();
                 	            //deleteFile("test.txt");

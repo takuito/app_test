@@ -27,13 +27,13 @@
         android:id="@+id/btnScanStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="指紋認証開始"
+        android:text="@string/ｓcan_start"
         />
     <Button 
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="指紋認証"
+        android:text="@string/fingerprint_authentication"
         />
     <Button 
         android:id="@+id/btnCancel"

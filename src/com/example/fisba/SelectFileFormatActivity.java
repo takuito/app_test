@@ -24,8 +24,6 @@ public class SelectFileFormatActivity extends Activity {
 
 	private Button mButtonOK;
 	private RadioGroup mRadioGroup;
-	private RadioButton mRadioBitmap;
-	private RadioButton mRadioWSQ;
 	private EditText mEditFileName;
 	private TextView mMessage;
 
@@ -46,21 +44,10 @@ public class SelectFileFormatActivity extends Activity {
         setContentView(R.layout.activity_select_file_format);
         mButtonOK = (Button) findViewById(R.id.buttonOK);
         mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
-        mRadioBitmap = (RadioButton) findViewById(R.id.radioBitmap);
-        //mRadioWSQ = (RadioButton) findViewById(R.id.radioWSQ);
         mEditFileName = (EditText) findViewById(R.id.editFileName);
         mMessage = (TextView) findViewById(R.id.textMessage);
         
         setResult(Activity.RESULT_CANCELED);
-
-        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {         	
-        	public void onCheckedChanged(RadioGroup group, int checkedId) {          	 
-        		if(checkedId==mRadioBitmap.getId())
-        			mFileFormat = "BITMAP";
-        		else if(checkedId==mRadioWSQ.getId())
-        			mFileFormat = "WSQ";
-        	}
-        });
         
         mButtonOK.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -73,11 +60,7 @@ public class SelectFileFormatActivity extends Activity {
             	if( !isImageFolder() )
             		return;
             	
-            	if(mFileFormat.compareTo("BITMAP") == 0 )
-            		mFileName = mFileName + ".bmp";
-            	else 
-            		mFileName = mFileName + ".wsq";
-            	
+            	mFileName = mFileName + ".bmp";
             	CheckFileName();
             }
         });
@@ -108,8 +91,9 @@ public class SelectFileFormatActivity extends Activity {
             // ストリームを開く
         	FileOutputStream outStream = openFileOutput("test.txt", MODE_APPEND);
             OutputStreamWriter writer = new OutputStreamWriter(outStream);
+            
             /*
-            //ここでファイル名から拡張子を
+            //ファイル名から拡張子を取り除く
             if(mFileFormat.compareTo("BITMAP") == 0 )
         		mFileName = mFileName.replaceAll(".bmp","");
         	else 

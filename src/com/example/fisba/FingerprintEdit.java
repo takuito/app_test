@@ -51,13 +51,14 @@ public class FingerprintEdit extends Activity {
 	private static Button mButtonEdit;
 	private static Button mButtonEditStart;
 
+	private static boolean mExistEdit = false;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fingerprint_edit);
         
         mButtonEdit = (Button) findViewById(R.id.btnEdit);
-        mButtonEditStart = (Button) findViewById(R.id.btnEditStart);
     	mButtonCancel = (Button) findViewById(R.id.btnCancel);
     	
     	mScannerInfo2 = (TextView) findViewById(R.id.tvScannerInfo2);
@@ -102,10 +103,6 @@ public class FingerprintEdit extends Activity {
                         public void onItemClick(AdapterView<?> parent,  
                                 View view, int position, long id) {  
                             // クリックされた時の処理
-                        	//mScannerInfo2.setText("猫");
-                        	
-                        	
-                        	
                         	Intent intent = new Intent();
                         	intent.setType("image/*");
                         	intent.setAction(Intent.ACTION_PICK);
@@ -125,36 +122,6 @@ public class FingerprintEdit extends Activity {
                 }
             }
         });
-    	        
-        /*
-    	mButtonEditStart.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-            	//デバッグ用
-                BufferedReader in = null;
-                try {
-                  FileInputStream fileRead = openFileInput("test.txt");
-                  in = new BufferedReader(new InputStreamReader(fileRead));
-                  String str = in.readLine();
-                  String[] str_Name = str.split(",", 0);
-                  
-                  String msg = "i:";
-                  for(int i =0;i<listView.getChildCount();i++){
-                	  CheckedTextView check = (CheckedTextView)listView.getChildAt(i);
-                	  if(check.isChecked()){
-                		  msg += check.getText() + "," +str_Name[i*3+0] + "," +str_Name[i*3+1] + "," +str_Name[i*3+2];
-                	  }
-                  }
-                  //msg += msg.substring(0, msg.length()-1);
-                  Toast.makeText(FingerprintEdit.this, msg, Toast.LENGTH_LONG).show();
-                  in.close();
-                } catch (IOException e) {
-                	mScannerInfo2.setText("ファイルが存在しません。");
-                  e.printStackTrace();
-                }
-            }
-        });
-    	*/
-    	
     	
         mButtonCancel.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -167,11 +134,8 @@ public class FingerprintEdit extends Activity {
         switch (requestCode) {
          case ID_IMAGE_GALLERY:
 			 if (resultCode == Activity.RESULT_OK) {
-				 //mScannerInfo2.setText("Ca");
-				 
 				 Uri uri = data.getData();
 				 mScannerInfo2.setText(uri.toString());
-				 
 				 BufferedReader in = null;
 				 try {
 					  FileInputStream fileRead = openFileInput("test.txt");
@@ -179,10 +143,45 @@ public class FingerprintEdit extends Activity {
 	                  String str = in.readLine();
 	                  String[] str_Name = str.split(",", 0);
 	                  //Toast.makeText(FingerprintEdit.this, String.format("%d", str_Name.length),Toast.LENGTH_SHORT).show();
-	                  if( (str_Name.length % 3) == 0 ){
-	                		  setFilename = str_Name[click_num*3+1];
-	                	  }
+	                  if( ((str_Name.length % 3) == 0) && (str_Name.length!=0) ){
+	                 			setFilename = str_Name[click_num*3+1];
+	                  }
 	                  in.close();
+			        } catch (IOException e) {
+			            e.printStackTrace();
+			        }
+				 
+				 BufferedReader in_edit = null;
+				 try {
+					  FileInputStream fileRead = openFileInput("hensyu.txt");
+					  in_edit = new BufferedReader(new InputStreamReader(fileRead));
+	                  String str = in_edit.readLine();
+	                  String[] str_Name = null;
+	                  if(null != str){
+	                	  str_Name = str.split(",", 0);
+	                	  if( ((str_Name.length % 2) == 0) ){
+		                	  for(int i=0; i < str_Name.length/2; i++){
+		                		  if(str_Name[i*2].equals(setFilename)){
+		                			  try {
+		                				  FileOutputStream outStream = openFileOutput("hensyu.txt", MODE_PRIVATE);
+			                	          OutputStreamWriter writer = new OutputStreamWriter(outStream);
+			                			  str = str.replace(str_Name[i*2+0]+","+str_Name[i*2+1]+",","");
+			                			  //ファイル更新
+			                	          writer.write(str);
+			                	          writer.flush();
+			                	          writer.close();
+			                	        } catch (IOException e) {
+			                	            e.printStackTrace();
+			                	        }
+		                 		 }
+		                	  }
+		                	  //setFilename = str_Name[click_num*3+1];
+		                  }
+	                  }
+	                  //setFilename = str_Name[click_num*3+1];
+	                  //Toast.makeText(FingerprintEdit.this, String.format("%d", str_Name.length),Toast.LENGTH_SHORT).show();
+	                  
+	                  in_edit.close();
 			        } catch (IOException e) {
 			            e.printStackTrace();
 			        }
@@ -203,38 +202,14 @@ public class FingerprintEdit extends Activity {
 				 //intent.setType("image/*");
 				 //startActivity(intent);
 				 
-				 /* 画像を表示*/
+				 /* デバッグ用：画像表示確認
+				 // 画像を表示
 				 Intent intent = new Intent();  
 				 intent.setType("image/*");  
 				 intent.setAction(Intent.ACTION_VIEW);  
 				 intent.setData(uri);
 				 startActivity(intent);
-				 
-				 /*
-				 try {  
-				      // 一時ファイル場所のUri取得処理  
-				      Uri mUri = data.getData();  
-				      if (mUri == null) {  
-				       String action = data.getAction();  
-				       if (action != null && action.indexOf("content://") > -1) {  
-				        mUri = Uri.parse(action);  
-				       }
-				       
-				      }
-				      mScannerInfo2.setText(mUri.toString());
-				      
-				 } catch (Exception e) {  
-				      Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();  
-				      e.printStackTrace();  
-				  }
-				  */
-				 
-				 
-			     // Get the file format
-				 //String[] extraString = data.getExtras().getStringArray(SelectFileFormatActivity.EXTRA_FILE_FORMAT);
-				 //String fileFormat = extraString[0];
-				 //String fileName = extraString[1];
-				 //SaveImageByFileFormat(fileFormat, fileName);
+				 */
              }
 			 else
 				 mScannerInfo2.setText("Cancelled!");

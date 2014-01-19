@@ -22,14 +22,14 @@
         android:id="@+id/btnDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="指紋削除"
+        android:text="@string/delete"
         />
     
     <Button 
         android:id="@+id/btnDeleteStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="指紋削除実行"
+        android:text="@string/delete_start"
         />
 
     <Button 
@@ -45,5 +45,4 @@
         android:layout_height="wrap_content"
         android:text="認証状況2"/>
     
-
 </LinearLayout>
