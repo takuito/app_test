@@ -27,7 +27,7 @@
         android:id="@+id/btnScanStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ｓcan_start"
+        android:text="@string/scan_start"
         />
     <Button 
         android:id="@+id/btnSave"

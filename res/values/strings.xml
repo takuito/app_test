@@ -11,7 +11,7 @@
     <string name="data_administration">データ管理</string>
     
     <string name="delete_start">指紋削除実行</string>
-    <string name="ｓcan_start">指紋認証開始</string>
+    <string name="scan_start">指紋認証開始</string>
     <string name="save">指紋保存</string>
     
     

@@ -63,13 +63,13 @@ int string registrationentry_text 0x7f05000c
 int string save 0x7f05000a
 int string scan_again 0x7f050019
 int string scan_failure 0x7f050015
+int string scan_start 0x7f050009
 int string scan_success 0x7f050014
 int string scan_text 0x7f05000b
 int string select_app 0x7f05001c
 int string select_data 0x7f05001b
 int string start_app 0x7f050018
 int string yes 0x7f05001e
-int string ｓcan_start 0x7f050009
 int style AppBaseTheme 0x7f060001
 int style AppTheme 0x7f060000
 int xml device_filter 0x7f040000

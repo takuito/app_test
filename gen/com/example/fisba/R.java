@@ -92,13 +92,13 @@ public final class R {
         public static final int save=0x7f05000a;
         public static final int scan_again=0x7f050019;
         public static final int scan_failure=0x7f050015;
+        public static final int scan_start=0x7f050009;
         public static final int scan_success=0x7f050014;
         public static final int scan_text=0x7f05000b;
         public static final int select_app=0x7f05001c;
         public static final int select_data=0x7f05001b;
         public static final int start_app=0x7f050018;
         public static final int yes=0x7f05001e;
-        public static final int ｓcan_start=0x7f050009;
     }
     public static final class style {
         /** 
