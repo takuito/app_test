@@ -32,8 +32,8 @@
         
         <activity android:name="com.example.fisba.FingerScan">
         </activity>
-        <activity android:name="com.example.fisba.SelectMenu"></activity>
-        <activity android:name="com.example.fisba.FingerprintRegistrationentry"></activity>
+        <activity android:name="com.example.fisba.DataAdministration"></activity>
+        <activity android:name="com.example.fisba.FingerprintRegist"></activity>
         <activity android:name="com.example.fisba.FingerprintDelete"></activity>
         <activity android:name="com.example.fisba.FingerprintEdit"></activity>
         

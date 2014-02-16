@@ -14,6 +14,7 @@
         android:id="@+id/tvMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
         android:text="@string/scan_text"/>
     
     <ImageView 
@@ -25,39 +26,24 @@
 
     <Button 
         android:id="@+id/btnScanStart"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="30sp"
         android:text="@string/scan_start"
         />
     <Button 
         android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="30sp"
         android:text="@string/save"
         />
     <Button 
         android:id="@+id/btnCancel"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="30sp"
         android:text="@string/cancel"
         />
-    
-    <TextView 
-        android:id="@+id/tvScannerInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="認証状況"/>
-    <TextView 
-        android:id="@+id/tvScannerInfo2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="認証状況2"/>
-        
-        <TextView 
-        android:id="@+id/tvScannerInfo3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="認証状況3"/>
-    
 
 </LinearLayout>

@@ -1,78 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
-    
-    <TextView 
+    android:orientation="vertical" >
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/fingerprint_authentication"/>
+        android:text="@string/fingerprint_authentication" />
 
-    <TextView 
+    <TextView
         android:id="@+id/tvMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/scan_text"/>
-    
-    <ImageView 
-        android:id="@+id/imageFinger"
-        android:contentDescription="Finger Image"
-        android:src="@drawable/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:textSize="20sp"
+        android:text="@string/scan_text" />
 
-    <Button 
-        android:id="@+id/btnScanStart"
+    <ImageView
+        android:id="@+id/imageFinger"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Finger Image"
+        android:src="@drawable/logo" />
+
+    <Button
+        android:id="@+id/btnScanStart"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/scan_start"
-        />
-    <Button 
+        android:textSize="30sp" />
+
+    <Button
         android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/fingerprint_authentication"
-        />
-    <Button 
+        android:textSize="30sp" />
+
+    <Button
         android:id="@+id/btnCancel"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/cancel"
-        />
-    
-    <TextView 
-        android:id="@+id/tvScannerInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="デバッグ用1"/>
-    
-        <TextView 
-        android:id="@+id/tvScannerInfo2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:text="認証結果"/>
-        
-        <TextView 
-        android:id="@+id/tvScannerInfo3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="デバッグ用2"/>
-        
-        <ImageView 
-        android:id="@+id/view1"
-        android:contentDescription="view1"
-        android:src="@drawable/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-        
-        <ImageView 
-        android:id="@+id/view2"
-        android:contentDescription="view2"
-        android:src="@drawable/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    
+        android:textSize="30sp" />
 
 </LinearLayout>
