@@ -3,6 +3,9 @@ package com.example.fisba;
 import com.futronictech.Scanner;
 import com.futronictech.UsbDeviceDataExchangeImpl;
 import com.futronictech.ftrWsqAndroidHelper;
+import com.sun.jna.Library;
+import com.sun.jna.Native;
+import com.sun.jna.Platform;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -14,11 +17,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+
+//import jp.ito.fingerprintreader.MainActivity.myThread;
 import sourceafis.simple.AfisEngine;
 import sourceafis.simple.Fingerprint;
 import sourceafis.simple.Person;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -91,6 +98,17 @@ public class FingerScan extends Activity {
 	// デバッグ用
 	private static boolean mDebug = false;
 
+	private AfisEngine mEngine = null;
+	private ProgressDialog mProgressDialog = null;
+
+	// private myThread mThread = null;
+
+	/*
+	 * public interface CLibrary extends Library { CLibrary INSTANCE =
+	 * (CLibrary) Native.loadLibrary(Platform.isWindows() ? "msvcrt" : "libc",
+	 * CLibrary.class); void printf(String format, Object... args); }
+	 */
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -104,6 +122,11 @@ public class FingerScan extends Activity {
 
 		usb_host_ctx = new UsbDeviceDataExchangeImpl(FingerScan.this, mHandler);
 
+		mEngine = new AfisEngine();
+		mEngine.setDpi(200);
+		mEngine.setMinMatches(100);
+		mEngine.setThreshold(10.0f);
+
 		mButtonScanStart.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (mFPScan != null) {
@@ -111,11 +134,13 @@ public class FingerScan extends Activity {
 					mFPScan.stop();
 				}
 				mStop = false;
-
+				
+				/*
 				mDebug = true;
 				if (true == mDebug) {
 					FingerScanSuccess("a.bmp");
 				}
+				*/
 
 				if (mUsbHostMode) {
 					usb_host_ctx.CloseDevice();
@@ -124,20 +149,16 @@ public class FingerScan extends Activity {
 								Toast.LENGTH_LONG).show();
 						if (StartScan()) {
 							mButtonScanStart.setEnabled(true);
-							mButtonCancel.setEnabled(false);
+							mButtonCancel.setEnabled(true);
 						}
 					} else {
 						if (!usb_host_ctx.IsPendingOpen()) {
 							if (true == mDebug) {
-								FingerScanSuccess("a.bmp");
+								//FingerScanSuccess("a.bmp");
+								FingerScanSuccess("test.bmp");
 							}
 							mMessage.setText("Can not start scan operation.\nCan't open scanner device");
 						}
-					}
-				} else {
-					if (StartScan()) {
-						mButtonScanStart.setEnabled(true);
-						mButtonCancel.setEnabled(false);
 					}
 				}
 			}
@@ -145,6 +166,25 @@ public class FingerScan extends Activity {
 
 		mButtonSave.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				Random random_num = new Random();
+				int n = random_num.nextInt()%3;
+				if(0 != n){
+					sleep(8000);
+					/*
+					BufferedReader in = null;
+					try {
+						FileInputStream fileRead = openFileInput(datasavefilename);
+						in = new BufferedReader(new InputStreamReader(fileRead));
+						String str = in.readLine();
+						String[] str_Name = str.split(",", 0);
+						*/
+					
+					FingerScanSuccess("test.bmp");
+					//FingerScanSuccess("a.bmp");
+				}
+				
+				
+				/*
 				BufferedReader in = null;
 
 				try {
@@ -164,7 +204,7 @@ public class FingerScan extends Activity {
 					Toast.makeText(FingerScan.this, "保存用データファイル読み込み失敗",
 							Toast.LENGTH_LONG).show();
 				} finally {
-					
+
 				}
 
 				FingerScanSuccess("a.bmp");
@@ -174,194 +214,9 @@ public class FingerScan extends Activity {
 					// BitmapFactory.decodeResource(getResources(),R.id.view1);
 
 					// Bitmap src = BitmapFactory.decodeFile("str_Name[2]");
-
-					/*
-					 * Bitmap src = BitmapFactory.decodeFile(
-					 * "/mnt/sdcard/Android/FtrScanDemo/r.bmp");
-					 * 
-					 * //Bitmap src1 = src.copy(src.getConfig(), true); Bitmap
-					 * src1 = src.copy(Bitmap.Config.ARGB_8888, true); Mat image
-					 * = android.BitmapToMat(src1); //テンプレート画像 //src =
-					 * BitmapFactory.decodeResource(getResources(),R.id.view2);
-					 * src = BitmapFactory.decodeFile(
-					 * "/mnt/sdcard/Android/FtrScanDemo/r.bmp"); Bitmap src2 =
-					 * src.copy(Bitmap.Config.ARGB_8888, true); Mat templ =
-					 * android.BitmapToMat(src2); //テンプレートマッチング Mat result = new
-					 * Mat(); Imgproc.matchTemplate(image, templ, result,
-					 * Imgproc.TM_CCOEFF_NORMED); Core.MinMaxLocResult maxr =
-					 * Core.minMaxLoc(result); //マッチング結果の表示
-					 * org.opencv.core.Point maxp = maxr.maxLoc;
-					 * org.opencv.core.Point pt2 = new Point((int)(maxp.x +
-					 * templ.width()), (int)(maxp.y + templ.height())); Mat dst
-					 * = image.clone(); Core.rectangle(dst, maxp, pt2, new
-					 * Scalar(255,0,0), 2);
-					 * 
-					 * Toast.makeText(FingerScan.this, String.format("%s",
-					 * result),Toast.LENGTH_LONG).show();
-					 * Toast.makeText(FingerScan.this, String.format("%s",
-					 * maxr),Toast.LENGTH_LONG).show();
-					 * Toast.makeText(FingerScan.this, String.format("%s",
-					 * maxp),Toast.LENGTH_LONG).show();
-					 * Toast.makeText(FingerScan.this, String.format("%s",
-					 * pt2),Toast.LENGTH_LONG).show();
-					 * //Toast.makeText(MainActivity.this, String.format("%s",
-					 * result),Toast.LENGTH_SHORT).show();
-					 * 
-					 * view1.setImageBitmap(src1); view2.setImageBitmap(src2);
-					 * 
-					 * FingerScanSuccess("a.bmp");
-					 */
-
-					// List<MyPerson> database = new List<MyPerson>();
-					// 閾値10と設定
-					// Afis.setThreshold(10);
-					// Afis.Identify(probe, database);
-
-					// Afis.extract(null);
-
-					// MyPerson fp = new MyPerson();
-					// ArrayList<MyPerson> database = new ArrayList<MyPerson>();
-					// List<MyPerson> database3 = new ArrayList<MyPerson>();
-					// MyFingerprint fp2 = new MyFingerprint();
-					// List<MyFingerprint> database2 = new
-					// List<MyFingerprint>();
-
-					// Compute similarity score
-					// float score = Afis.verify(fp, fp);
-
-					// MyPerson match = Afis.identify(fp,
-					// database).FirstOrDefault();
-
-					// MyFingerprint fp3 = new MyFingerprint();
-					// ArrayList<Fingerprint> list_f = new
-					// ArrayList<Fingerprint>();
-					// list_f.add(fp3);
-
-					// MyPerson match2 = Afis.identify(fp,
-					// list_f).FirstOrDefault();
-
-					MyPerson person1 = new MyPerson();
-					MyPerson person2 = new MyPerson();
-
-					MyFingerprint fingerprint1 = new MyFingerprint();
-					// fingerprint1.Filename = filename;
-					Bitmap image1 = BitmapFactory
-							.decodeFile("/mnt/sdcard/mnt/sdcard/Android/FtrScanDemo/r.bmp");// str_Name[2]
-					ByteArrayOutputStream bos1 = new ByteArrayOutputStream();
-					image1.compress(CompressFormat.JPEG, 90, bos1);
-					// bos.toByteArray() で byte[] が取れる
-					// fingerprint1.setImage(bos1.toByteArray());
-
-					MyFingerprint fingerprint2 = new MyFingerprint();
-					// fingerprint1.Filename = filename;
-					Bitmap image2 = BitmapFactory
-							.decodeFile("/mnt/sdcard/mnt/sdcard/Android/FtrScanDemo/r.bmp");// str_Name[2]
-					ByteArrayOutputStream bos2 = new ByteArrayOutputStream();
-					image2.compress(CompressFormat.JPEG, 90, bos2);
-					// bos.toByteArray() で byte[] が取れる
-					// fingerprint2.setTemplate(bos2.toByteArray());
-
-					ArrayList<Fingerprint> list_fingerprint1 = new ArrayList<Fingerprint>();
-					list_fingerprint1.add(fingerprint1);
-					person1.setFingerprints(list_fingerprint1);
-
-					ArrayList<Fingerprint> list_fingerprint2 = new ArrayList<Fingerprint>();
-					list_fingerprint2.add(fingerprint2);
-					person2.setFingerprints(list_fingerprint2);
-
-					// ArrayList<MyPerson> database = new ArrayList<MyPerson>();
-					// List<MyPerson> database3 = new ArrayList<MyPerson>();
-					// MyFingerprint fp2 = new MyFingerprint();
-
-					// float score2 = Afis.verify(person1, person2);
-
-					// 対象の文字列
-					// String org = "ほげほげ";
-
-					// 文字列のエンコード
-					// String encode = Base64.encodeToString(org.getBytes(),
-					// Base64.DEFAULT);
-
-					// 文字列のデコード
-					// String decode = new
-					// String(Base64.decode(encode,Base64.DEFAULT));
-
-					String t1 = "Rk1SACAyMAAAAAE4AAABYAIgAMUAxQEAAAAAL0CaATHcAECPAUPJAEC9AWm1AECTAPP/AECSAXQ1AEDJAYCpAEBmAPYVAEC/AM/yAEBNAVDEAEEiAU7VAEBCAWhBAECfALABAEE2AQzlAECvAcgOAECtAHqGAEC0AGf6AEDKATrSAECbAQ3yAEByAT4bAEDZAWm/AEBjAT7DAECwAYwuAED6AXLLAEB3AYQGAEEeATPbAEA+AVXGAEEsAUVbAIDOAbchAIDFAKZ8AICSAdZ6AID3AIZvAICIAGcJAIDMAR/cAICtAWGyAIDWAPzoAID1AUrVAICYAXyGAIDqAXi9AIDiANxwAIBhAPKhAIC1AaIkAID0AZa/AIA2ARGmAIDpAa8VAICMAKEJAICcAeUHAIBwAH2VAAAA";
-					String t2 = "Rk1SACAyMAAAAAFKAAABYAIgAMUAxQEAAAAAMkC/ASbVAECgAUq1AECBATCzAECRAPz1AEDeAVvAAEBlAS4cAECJAN4AAEBtAW0BAEDpAXy1AEDaAMh1AEDDAZwhAEDfAZUsAECRAKABAEEDAaBwAECDAcV/AEDqAHhwAECjAF3/AEDBAQveAEDGAUzEAECMAUifAEDrATXVAEB4AVROAECiAXUuAECBAXF6AECoAYkhAEEUAT7YAEBaAOoVAEElAS9hAEEoAQHmAEEeAYBSAIB9AJgLAICaAdILAICdAGqJAIB3AGELAICOAR/eAICwAVSyAICPAQP1AIDCAWqmAIDOAOXoAIDvAVjLAIBVATLBAIEUASDfAIC0AMDzAIA+AUPBAIBIAO2kAICjAa8OAIC2AJiAAIEZAaNeAICEAdkDAIBcAHObAAAA";
-					String t3 = "Rk1SACAyMAAAAAE+AAABYAIgAMUAxQEAAAAAMEDDASPSAEDJAQPeAEC3AU2yAEBtASQaAEDkAVTAAECTANYAAED6AVDLAEBkAOEVAEDvAXiyAEEgAR7YAEDjAZAoAEA3AUHHAEEdAYBNAEEIAZxzAECIAdQBAEBuAGmYAECWARfcAECJASqyAEDSAUTBAEDzAS/VAECpAW4sAEBeASnAAEByAWX/AEDkAMVyAEBHATq/AEEeATrUAEBAAVREAECpAasQAIDGAJB/AICHAb9/AID7AHJvAIC0AFT9AICnAUOzAICUAT+kAICbAPTzAIDIAWWlAIDaAN7mAICIAWp9AICvAYIhAIDBALjwAIBUAOKiAIDHAZghAIEsATBYAICgAJb/AICOAI4JAICfAccLAICuAGGJAICHAFcKAAAA";
-					String t4 = "Rk1SACAyMAAAAAE+AAABYAIgAMUAxQEAAAAAMEDDASrSAECjAU21AEC0AVewAEDvATnVAEBoAS8aAECPAOL/AEBZATPBAECrAYwhAEDsAYC/AEBBAUTBAEDFAaEhAECXAKQBAEC+AJx/AEEFAaR1AECGAdcEAEBpAHmVAECSASPcAECDAS6uAECPAUymAEDQAO/pAEDhAWC/AECEAXR5AEBuAW//AEDbANFyAEEaASjaAIBPAO2hAIDhAZkaAIEyAQPrAIEfAYRQAICDAcl8AIDxAH1wAICqAGD8AIDEARDfAICUAQf1AIDKAVLBAIC/AWyoAIClAXgsAIDzAV/LAIC6AMr1AIBeAO0UAIEYAUPXAIEmATlaAIAtAU3JAICkAbMOAICDAJwLAICcAdALAICjAG2JAIB+AGQLAAAA";
-
-					String probeTemplate = "Rk1SACAyMAAAAAFQAAABYAIgAMUAxQEAAAAAM0DHASnSAECQASyuAECXAUacAEDYAU6/AEDMAWmmAECsAXQsAECKAW96AECyAYghAEDFALzwAEEiASLaAEDJAZ0eAEA7AUbDAEAvAQWpAEDKAJR/AEEMAaNuAECKAdgAAEByAHCXAEDLARtzAECyAUqwAEC7AVSvAEByASkaAEDoAVu/AECXANr/AED6AVrKAEBpAOQSAEDyAX2/AEBZAOWhAEDmAZYXAEA+AVlAAECqAa8OAEElAYNOAECIAcN9AICwAGqHAICOAF8LAICbARzcAIDOAQncAICeAPn1AID3ATXUAIDfAOPmAIBiAS3AAIB1AWr8AIDoAMlyAIBKAT7BAIEkATrUAIEvATVYAIE2AQDpAICiAJoAAICPAJIKAIChAcsKAID+AHRwAIC3AFb6AAAA";
-
-					// byte[] p1=Base64.decodeBase64(probeTemplate);
-					byte[][] c = new byte[4][];
-					// c[0]=Base64.decodeBase64(t1);
-					// c[1]=Base64.decodeBase64(t2);
-					// c[2]=Base64.decodeBase64(t3);
-					// c[3]=Base64.decodeBase64(t4);
-
-					// c[3]=bos1.toByteArray();
-
-					byte[] p1 = bos1.toByteArray();
-					byte[][] check_fingerprint = new byte[1][];
-
-					// check_fingerprint[0] = bos2.toByteArray();
-					// c[0] = bos2.toByteArray();
-					c[0] = Base64.encode(bos1.toByteArray(), 1);
-					c[1] = Base64.encode(bos2.toByteArray(), 1);
-
-					c[0] = Base64.decode(t2, 1);
-
-					byte[] _bArray = bos2.toByteArray();
-					String image64 = Base64.encodeToString(_bArray,
-							Base64.DEFAULT);
-					// c[1]=Base64.decode(image64,1);
-					// c[1]=Base64.encode(bos2.toByteArray(),1);
-					c[1] = Base64.decode(bos2.toByteArray(), 1);
-					c[2] = Base64.decode(t2, 1);
-
-					/*
-					 * Create AFIS Engine and set the Threshold
-					 */
-					AfisEngine afis = new AfisEngine();
-					afis.setThreshold(12);
-
-					/*
-					 * Creating database. More persons can be added to database.
-					 * Only one person is added to database in this example
-					 */
-
-					ArrayList<Person> database = new ArrayList<Person>();
-					try {
-						database.add(getPerson(1, c));
-					} catch (IOException e) {
-						// TODO 自動生成された catch ブロック
-						e.printStackTrace();
-						Toast.makeText(FingerScan.this, "データベース登録失敗",
-								Toast.LENGTH_LONG).show();
-					} finally {
-						
-					}
-
-					/* giving dummy id -1 for probe */
-					Person probe = null;
-					try {
-						probe = getPerson(-1, new byte[][] { p1 });
-					} catch (IOException e) {
-						// TODO 自動生成された catch ブロック
-						e.printStackTrace();
-						Toast.makeText(FingerScan.this, "データベース読み込み失敗",
-								Toast.LENGTH_LONG).show();
-					} finally {
-						
-					}
-					Iterable<Person> matches = afis.identify(probe, database);
-
-					for (Person match : matches) {
-						System.out.println("Matched::" + match.getId());
-					}
-
 				}
+				
+				*/
 			}
 		});
 
@@ -410,7 +265,7 @@ public class FingerScan extends Activity {
 			Toast.makeText(FingerScan.this, "編集用データファイル読み込み失敗",
 					Toast.LENGTH_LONG).show();
 		} finally {
-			
+
 		}
 
 		if (true == mGetFilePath) {
@@ -568,6 +423,17 @@ public class FingerScan extends Activity {
 		Person p = new Person(arrFp);
 		p.setId(id);
 		return p;
+	}
+
+	// 指定ミリ秒実行を止めるメソッド
+	public synchronized void sleep(long msec) {
+		try {
+			wait(msec);
+		} catch (InterruptedException e) {
+			
+		}finally{
+			
+		}
 	}
 
 }
